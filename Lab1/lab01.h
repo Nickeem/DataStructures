@@ -28,7 +28,7 @@ string smallest(string a, string b, string c) {
 template <class T>
 void print(T item) {
 	cout << item << endl;
-}
+} // end of print template function
 //END OF PART B
 
 // Part C
@@ -55,19 +55,22 @@ inline float areaOfCircle(double r) {
 // Part E
 void pointerSquare(int *pointer) {
 	*pointer *= *pointer; // square value in pointer
-}
+} // end of pointerSquare function
+
 // END OF PART E
 
 //Part F
 bool pointerEvenCheck(int *pointer) {
 	return (*pointer) % 2 == 0; // check if value at address is even
-}
+} // end of pointerEvenCheck function
+
 // END OF PART F
 
 // Part G
 int* varAddress(int &num){
 	return &num; // return variable address
-}
+} // end of varAddress function
+
 // END OF PART G
 
 // Part H
@@ -76,7 +79,8 @@ int product(int x, int y){
 		return x;
 	}
 	return x + product(x, --y); // product using sums
-}
+} // end of product function
+
 // END OF PART H 
 
 // Part I
@@ -85,6 +89,7 @@ int power(int x, int y){
 		return x;
 	}
 	return x * power(x, --y); // power using recursion
-} 
+} // end of power function 
+
 // END OF PART I
 
