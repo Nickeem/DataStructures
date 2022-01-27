@@ -1,3 +1,6 @@
+#ifndef LAB01_H
+#define LAB01_H
+
 #include <iostream>
 #include <cmath>
 
@@ -39,15 +42,15 @@ float calc(int a=1, int b=1, int c=1) {
 
 // Part D
 inline float areaOfCircle(int r) {
-	return M_PI * r **2;
+	return M_PI *pow( r,2) ;
 }
 
 inline float areaOfCircle(float r) {
-	return M_PI * r **2;
+	return M_PI * pow(r, 2);
 }
 
 inline float areaOfCircle(double r) {
-	return M_PI * r **2;
+	return M_PI * pow(r, 2);
 }
 
 // END OF PART D
@@ -93,3 +96,4 @@ int power(int x, int y){
 
 // END OF PART I
 
+#endif
