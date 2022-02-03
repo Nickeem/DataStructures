@@ -1,3 +1,7 @@
+#include <map>
+#include <vector>
+#include <algorithm>
+using namespace std;
 /*
 Nickeem Payne-Deacon
 ID - 400008889
@@ -6,8 +10,22 @@ ID - 400008889
 //  Bucket Sort
 void BucketSort ( int table[], int max)
 {
-
-}
+	map<int, vector<int>> buckets;
+    for(int i =0; i < max; i++) 
+    {
+        buckets[table[i]/10].push_back(table[i]);  
+    }
+    int i = 0;
+    for(auto bucket: buckets)
+    {
+        sort(bucket.second.begin(), bucket.second.end());
+        for (auto element: bucket.second)
+        {
+            table[i] = element;
+            i++;
+        }
+    } // for
+} // Bucket Sort
 
 void SelectioSort ( int table[], int max)
 {
@@ -28,15 +46,82 @@ void SelectioSort ( int table[], int max)
 
 void InsertionSort ( int table[], int max)
 {
-
-}
+	int current; // holds current iteration from table array
+	int prv;
+	for(int i = 1; i < max; i++)
+	{
+		current = table[i];
+		prv = i - 1;
+		while (prv >= 0 && table[prv] > current )
+		{
+			table[prv + 1] = table[prv];
+			prv--;
+		}
+		// prv is decrement 1 last time befor exiting
+		table[prv+1] = current;
+	}
+} // Insertion Sort
 
 void QuickSort ( int table[], int max)
 {
 
-}
-
+} // QuickSort
+void merge (int[],int[],int[],int,int);
 void MergeSort ( int table[], int max)
 {
+	if (max < 2) {
+		return;
+	}
+	int  half = max / 2;
+	int o_half = max - half;
 
-}
+	int left_half[half];
+	int right_half[o_half];
+
+	for (int i = 0; i < o_half; i++)
+	{
+		if (i == o_half && (o_half%2) != (half%2) )
+		{
+			right_half[i] = table[i+half];
+			continue;
+		}
+		left_half[i] = table[i];
+		right_half[i] = table[i+half];
+	}
+
+	MergeSort(left_half, half );
+	MergeSort(right_half, o_half);
+
+	merge(table, left_half, right_half, half, o_half);
+} // MergeSort
+
+void merge(int table[],int left_half[], int right_half[], int leftLength, int rightLength)
+{
+	
+	int i = 0; int j = 0; int k = 0;
+	while (i < leftLength && j < rightLength)
+	{
+		if (left_half[i] <= right_half[j]) 
+		{
+			table[k] = left_half[i];
+			i++;
+		}
+		else 
+		{
+			table[k] = right_half[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < leftLength) {
+		table[k] = left_half[i];
+		i++; k++;
+	}
+	while (j < rightLength) {
+		table[k] = right_half[j];
+		j++; k++;
+	}
+
+
+} // merge
