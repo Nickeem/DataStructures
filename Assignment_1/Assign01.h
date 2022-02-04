@@ -61,11 +61,42 @@ void InsertionSort ( int table[], int max)
 		table[prv+1] = current;
 	}
 } // Insertion Sort
+void swap(int*, int*);
+int partition (int[], int, int);
 
-void QuickSort ( int table[], int max)
+void QuickSort ( int table[], int max, int min)
 {
-
+	if (min < max)
+    {
+		int p = partition(table, min, max);
+		quickSort(table, min, p - 1);
+        quickSort(table, p + 1, max);
+	}
 } // QuickSort
+void swap(int* element1, int* element2)
+{
+    int temp = *element1;
+    *element1 = *element2;
+    *element2 = temp;
+}
+
+int partition (int table[], int min, int max)
+{
+    int pivot = table[max];
+    int i = min - 1;
+
+    for (int j = min; j <= (max - 1); j++)
+    {
+        if (table[j] <= pivot)
+        {
+            i++;
+            swap(&table[i], &table[j]);
+        }
+    }
+    swap(&table[i + 1], &table[max]);
+    return (i + 1); // new partition
+}
+
 void merge (int[],int[],int[],int,int);
 void MergeSort ( int table[], int max)
 {
