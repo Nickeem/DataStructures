@@ -1,3 +1,5 @@
+#ifndef ASSIGN01_H
+#define ASSIGN01_H
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -27,7 +29,7 @@ void BucketSort ( int table[], int max)
     } // for
 } // Bucket Sort
 
-void SelectioSort ( int table[], int max)
+void SelectionSort ( int table[], int max)
 {
 	int i, j, temp;
 	for(int i = 0; i < max; i++)
@@ -64,13 +66,13 @@ void InsertionSort ( int table[], int max)
 void swap(int*, int*);
 int partition (int[], int, int);
 
-void QuickSort ( int table[], int max, int min)
+void QuickSort ( int table[], int max, int min=0)
 {
 	if (min < max)
     {
 		int p = partition(table, min, max);
-		quickSort(table, min, p - 1);
-        quickSort(table, p + 1, max);
+		QuickSort(table, p - 1, min);
+        QuickSort(table, max, p + 1);
 	}
 } // QuickSort
 void swap(int* element1, int* element2)
@@ -156,3 +158,5 @@ void merge(int table[],int left_half[], int right_half[], int leftLength, int ri
 
 
 } // merge
+
+#endif
