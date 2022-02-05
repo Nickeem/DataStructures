@@ -31,7 +31,7 @@ void BucketSort ( int table[], int max)
 
 void SelectionSort ( int table[], int max)
 {
-	int i, j, temp;
+	int temp; // holds variable for swapping
 	for(int i = 0; i < max; i++)
 	{
 		for(int j = i; j < max; j++)
@@ -49,7 +49,7 @@ void SelectionSort ( int table[], int max)
 void InsertionSort ( int table[], int max)
 {
 	int current; // holds current iteration from table array
-	int prv;
+	int prv; // previous variable
 	for(int i = 1; i < max; i++)
 	{
 		current = table[i];
@@ -59,15 +59,18 @@ void InsertionSort ( int table[], int max)
 			table[prv + 1] = table[prv];
 			prv--;
 		}
-		// prv is decrement 1 last time befor exiting
+		// prv is decremented 1 last time befor exiting
 		table[prv+1] = current;
 	}
 } // Insertion Sort
+
+
 void swap(int*, int*);
 int partition (int[], int, int);
 
 void QuickSort ( int table[], int max, int min=0)
 {
+	//max must be max - 1 (index of last element) when the function is originally called
 	if (min < max)
     {
 		int p = partition(table, min, max);
@@ -77,14 +80,14 @@ void QuickSort ( int table[], int max, int min=0)
 } // QuickSort
 void swap(int* element1, int* element2)
 {
-    int temp = *element1;
-    *element1 = *element2;
-    *element2 = temp;
+    int temp = *element1; // stores element1's value
+    *element1 = *element2; // element1 value is set to element2's
+    *element2 = temp; // element2's new value is element1 previous
 }
 
 int partition (int table[], int min, int max)
 {
-    int pivot = table[max];
+    int pivot = table[max]; // last element in array
     int i = min - 1;
 
     for (int j = min; j <= (max - 1); j++)
@@ -146,7 +149,8 @@ void merge(int table[],int left_half[], int right_half[], int leftLength, int ri
 		}
 		k++;
 	}
-
+	
+	// add elements not added after while loop exited
 	while (i < leftLength) {
 		table[k] = left_half[i];
 		i++; k++;

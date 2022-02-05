@@ -9,13 +9,72 @@ void print(int arr[], int max) {
 	cout << endl;
 }
 int main() {
-	int max = 12;
-	int table[] = {300,272,0,4333,14, 1020,3,5,7,2,2,1};
+	int max = 6;
+	int table[max];
+
+	for (int i = 0; i < max; i++)
+	{
+		table[i] = rand()%1000;
+	}
 	
 	cout << "Before: ";
 	print(table, max);
 	// Selection, Merge, Quick, Bucket, Insertion
-	QuickSort(table, max);
-	cout << "After: ";
+	BucketSort(table, max);
+	cout << "Bucket After: ";
 	print(table, max);
+	cout << endl;	
+	
+	//next
+	for (int i = 0; i < max; i++)
+	{
+		table[i] = rand()%1000;
+	}
+	
+	cout << "Before: ";
+	print(table, max);
+	// Selection, Merge, Quick, Bucket, Insertion
+	QuickSort(table, max-1);
+	cout << "Quick After: ";	
+	print(table, max);
+	cout << endl;	
+
+	// next
+	for (int i = 0; i < max; i++)
+	{
+		table[i] = rand()%1000;
+	}
+	
+	cout << "Before: ";
+	print(table, max);
+	SelectionSort(table, max);
+	cout << "Selection After: ";
+	print(table, max);
+	cout << endl;
+
+	// next
+	for (int i = 0; i < max; i++)
+	{
+		table[i] = rand()%1000;
+	}
+	
+	cout << "Before: ";
+	print(table, max);
+	MergeSort(table, max);
+	cout << "Merge After: ";
+	print(table, max);
+	cout << endl;	
+	
+	// next
+	for (int i = 0; i < max; i++)
+	{
+		table[i] = rand()%1000;
+	}
+	
+	cout << "Before: ";
+	print(table, max);
+	InsertionSort(table, max);
+	cout << "Insertion After: ";
+	print(table, max);
+	
 }
