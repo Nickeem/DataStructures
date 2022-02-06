@@ -9,7 +9,7 @@ void print(int arr[], int max) {
 	cout << endl;
 }
 int main() {
-	int max = 6;
+	int max = 7;
 	int table[max];
 
 	for (int i = 0; i < max; i++)
@@ -34,7 +34,7 @@ int main() {
 	cout << "Before: ";
 	print(table, max);
 	// Selection, Merge, Quick, Bucket, Insertion
-	QuickSort(table, max-1);
+	QuickSort(table, max);
 	cout << "Quick After: ";	
 	print(table, max);
 	cout << endl;	

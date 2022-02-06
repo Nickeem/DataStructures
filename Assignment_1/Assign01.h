@@ -68,14 +68,16 @@ void InsertionSort ( int table[], int max)
 void swap(int*, int*);
 int partition (int[], int, int);
 
-void QuickSort ( int table[], int max, int min=0)
+void QuickSort ( int table[], int max, int min=0, bool first_time=true)
 {
-	//max must be max - 1 (index of last element) when the function is originally called
+	if (first_time) {
+		max--; //max must be max - 1 (index of last element) when the function is first called
+	}
 	if (min < max)
     {
 		int p = partition(table, min, max);
-		QuickSort(table, p - 1, min);
-        QuickSort(table, max, p + 1);
+		QuickSort(table, p - 1, min, false);
+        QuickSort(table, max, p + 1, false);
 	}
 } // QuickSort
 void swap(int* element1, int* element2)
