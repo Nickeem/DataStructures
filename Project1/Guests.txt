@@ -1,0 +1,61 @@
+Client ID,	FirstName,	Surname,		Destination,		Membership,		Booking
+49433,		Wayne,		Alleyne,		St Lucia,		Regular,		Vacation
+53813,	 	Tonia,	 	Archer-Boyd,		UK,	 		Platinum,	 	Vacation
+53813,	 	Tonia,	 	Archer-Boyd,		Australia,	 	Silver,	 		Business
+50813,	 	Tyrone,	 	Arthur,	 		St Lucia,	 	Platinum,	 	Vacation
+50813,	 	Tyrone,	 	Arthur,	 		Grand Cayman,		Regular,	 	Walk-in
+50342,	 	Titus,	 	Basdeo,	 		Trinidad,	 	Platinum,	 	Vacation
+50280,	 	Tito,	 	Blades,	 		Trinidad,	 	Gold,	 		Vacation
+50365,	 	Sherry,	 	Broomes,		Trinidad,	 	Regular,	 	Business
+50365,	 	Sherry,	 	Broomes,	 	Trinidad,	 	Regular,	 	Business
+51760,	 	Herbert,	Burke,	 		Canada,	 		Silver,	 		Vacation
+51760,	 	Herbert,	Burke,	 		Canada,	 		Regular,	 	Business
+49673,	 	Shawn,	 	Bynoe,	 		Jamaica,	 	Gold,	 		Walk-in
+49673,	 	Shawn,	 	Bynoe,	 		Trinidad,	 	Regular,	 	Vacation
+49673,	 	Shawn,	 	Bynoe,	 		Belize,	 		Gold,	 		Walk-in
+55085,	 	Venna,	 	Carter,	 		UK,	 		Platinum,	 	Vacation
+51106,	 	Shane,	 	Chandler,	 	Jamaica,	 	Regular,	 	Business
+51106,	 	Shane,	 	Chandler,	 	Jamaica,	 	Gold,	 		Business
+49340,	 	Sean,	 	Clarke,	 		Jamaica,	 	Gold,	 		Vacation
+51068,	 	Ron,	 	Dodson,	 		St Vincent,	 	Platinum,	 	Vacation
+51068,	 	Ron,	 	Dodson,	 		Grenada,	 	Gold,	 		Walk-in
+49640,	 	Randy,	 	Edey,	 		UK,	 		Gold,	 		Vacation
+50242,	 	Nicholas,	Ellis,	 		St Kitts,	 	Silver,	 		Walk-in
+50242,	 	Nicholas,	Ellis,	 		USA,	 		Silver,		 	Vacation
+50346,	 	Mark,	 	Evelyn,	 		Germany,	 	Platinum,	 	Vacation
+50956,	 	Melodie,	Evelyn,	 		Holland,	 	Gold,	 		Vacation
+50222,	 	Lori,	 	Francis,	 	Dominica,	 	Regular,	 	Business
+58051,	 	Hanz,	 	Gettz,	 		UK,	 		Regular,	 	Business
+58051,	 	Hanz,	 	Gettz,	 		UK,	 		Gold,	 		Business
+50278,	 	Lisa,	 	Gooding,	 	St Lucia,	 	Regular,	 	Vacation
+49772,	 	Kyle,	 	Goring,	 		USA,	 		Gold,	 		Vacation
+51831,	 	Martin,	 	Gray,	 		UK,	 		Platinum,	 	Vacation
+51831,	 	Martin,	 	Gray,	 		Guyana,	 		Silver,	 		Vacation
+49590,	 	Kevin,	 	Harrison,	 	Trinidad,	 	Regular,	 	Business
+49209,	 	Kevin,	 	Hazell,	 		USA,	 		Gold,	 		Walk-in
+49655,		Kent,	 	Hazelwood,	 	Trinidad,	 	Gold,	 		Vacation
+49455,	 	Ian,	 	John,	 		Mexico,	 		Gold,			Walk-in
+49265,	 	Glenn,	 	Lashley,	 	Puerto Rico,		Platinum,	 	Vacation
+50302,	 	George,	 	Lashley,	 	Venezuela,	 	Gold,	 		Walk-in
+50302,	 	George,	 	Lashley,	 	Puerto Rico,		Regular,	 	Business
+50358,	 	Gabriel,	Leonard,	 	Puerto Rico,		Gold,	 		Vacation
+50947,	 	Elvis,	 	Lynch,	 		Grenada,	 	Gold,	 		Walk-in
+50428,	 	Dionne,	 	Maynard,	 	St Vincent,	 	Gold,	 		Vacation
+51085,		Kelvin,		Monks,	 		Canada,	 		Silver,	 		Vacation
+50176,	 	David,	 	Nightingale,		Mexico,	 		Silver,	 		Walk-in
+50770,		Dave,	 	Nurse,	 		Antigua,	 	Platinum,	 	Vacation
+50770,	 	Dave,	 	Nurse,	 		Montserrat,	 	Regular,	 	Business
+49693,	 	Danielle,	Padmore,	 	Antigua,	 	Gold,	 		Vacation
+50202,	 	Brian,		Spencer,	 	Canada,	 		Silver,	 		Vacation
+50522,	 	Andre,	 	Turton,	 		France,	 		Silver,	 		Vacation
+49330,	 	Alison,	 	Wilson,	 		Germany,	 	Silver,	 		Vacation
+50881,	 	Alan,	 	Wooding,	 	Germany,	 	Regular,	 	Walk-in
+50881,	 	Alan,	 	Wooding,	 	Germany,	 	Regular,	 	Business
+
+
+
+
+
+
+
+
