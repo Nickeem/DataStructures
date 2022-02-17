@@ -315,7 +315,10 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             filenameTextBox->AppendText(CurrentFilePath);
 
             MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
-
+            
+            /*
+             * ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
+             */
             // Set the Title
             SetTitle(wxString(wxT("Dummy")));
         }
