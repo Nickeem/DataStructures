@@ -6,7 +6,7 @@
 
 #include <fstream> 
 #include <string> 
-
+// g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
 using namespace std;
 
@@ -36,6 +36,9 @@ class ProjectFrame: public wxFrame
         void OnSave(wxCommandEvent& event);
         void OnSaveAs(wxCommandEvent& event);
         void OnExit(wxCommandEvent& event);     //handle for Quit function
+        
+        // About function
+        void About(wxCommandEvent& event);
 
         //Functions for Queue Menu Items
         void queueDisplay(wxCommandEvent& event);
@@ -74,6 +77,7 @@ enum
 	ID_Save,
 	ID_SaveAs,
 	ID_Exit,
+    ID_Help,
 
 	// Queue submenu items
     ID_Q_Display,
@@ -212,6 +216,9 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     stackMenu->Append( ID_S_Head , wxT("Show Head") );
     stackMenu->Append( ID_S_Tail , wxT("Show Tail") );
     stackMenu->Append( ID_S_Pop , wxT("Pop") );
+    
+    helpMenu->Append( ID_About , wxT("About"));
+    helpMenu->Append( ID_Exit , wxT("Exit"));
     
     
 
@@ -373,6 +380,7 @@ void ProjectFrame::OnExit(wxCommandEvent& event)
     }
 
 
+void ProjectFrame::About(wxCommandEvent& event) {}
 
 
 //=============================================================================
