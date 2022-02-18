@@ -1,7 +1,7 @@
 #ifndef  QUEUE_H
 #define QUEUE_H
 #include <iostream>
-#include <"Queue.h">
+#include <"Node.h">
 
 class Queue {
     public:
@@ -41,6 +41,8 @@ void Queue::enqueue(Node *element) {
 }
 
 void Queue::dequeue() {
+    if (isEmpty())
+        return; // tail implementation?
     Node *temp = head->next;
     delete head;
     head = temp;
