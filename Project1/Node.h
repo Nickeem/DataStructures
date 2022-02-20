@@ -7,6 +7,7 @@ class Node {
         std::string *data;
     public:
         Node *next;
+        int ID;
         
         Node(std::string *data) {
             next = nullptr;
@@ -14,10 +15,20 @@ class Node {
         }
         
         std::string showData();
+        void setID(int);
+        int getID();
 };
 
 std::string Node::showData() {
     return *data;
+}
+
+void Node::setID(int id) {
+    this.ID = id
+}
+
+int Node::getID() {
+    return ID;
 }
 
 #endif

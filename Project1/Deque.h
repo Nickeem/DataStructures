@@ -12,6 +12,21 @@ class Deque : public Queue{
 void Deque::dequeTail() {
     if (isEmpty())
         return;
+    
+    Node *temp = head;
+    while (temp->next != tail) {
+        temp = temp->next;
+    }
+    if (head == tail) {
+        head = nullptr;
+        delete tail;
+        tail = nullptr;
+        return
+    }
+    delete tail;
+    tail = temp;
+    tail->next = nullptr;
+    
 }
 
 #endif

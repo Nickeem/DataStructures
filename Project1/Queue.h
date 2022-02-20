@@ -43,9 +43,15 @@ void Queue::enqueue(Node *element) {
 void Queue::dequeue() {
     if (isEmpty())
         return; // tail implementation?
-    Node *temp = head->next;
+    Node *temp = nullptr;
+    if (head != tail)
+    {
+        temp = head->next;
+    }
+    else {tail = nullptr;}
     delete head;
     head = temp;
+    
 }
 
 std::string Queue::display() {
