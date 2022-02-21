@@ -6,10 +6,21 @@
 
 class Deque : public Queue{
     pubilc:
-        void dequeTail();
+        void enqueueHead();
+        void dequeueTail(Node*);
 };
 
-void Deque::dequeTail() {
+void Deque::enqueueHead(Node *element) {
+    if (isEmpty()) {
+        head = element;
+        tail = element;
+        return;
+    }
+    element->next = head;
+    head = element;
+}
+
+void Deque::dequeueTail() {
     if (isEmpty())
         return;
     
