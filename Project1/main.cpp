@@ -6,6 +6,11 @@
 
 #include <fstream> 
 #include <string> 
+#include <"Deque.h">
+#include <"Node.h">
+#include <"PriorityQueue.h">
+#include <"Queue.h">
+#include <"Stack.h">
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
 using namespace std;
