@@ -12,7 +12,7 @@ class Queue {
             head = nullptr;
         }
         bool isEmpty();
-        std::string showHead()();
+        std::string showHead();
         std::string showTail();
         void enqueue(Node* element);
         void dequeue();
@@ -55,10 +55,10 @@ void Queue::dequeue() {
 }
 
 std::string Queue::display() {
-    string fullData = "";
+    std::string fullData = "";
     Node *temp = head;
     while (temp != nullptr) {
-        data = temp->showData() + '\n';
+        fullData += temp->showData() + '\n';
         temp = temp->next;
     }
     return fullData;

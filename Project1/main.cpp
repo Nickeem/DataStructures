@@ -24,6 +24,10 @@ class ProjectFrame: public wxFrame
 {
      private:
         DECLARE_EVENT_TABLE() //To declare events items
+        Deque deque;
+        PriorityQueue pQueue;
+        Queue queue;
+        Stack stack;
 
      public:
         ProjectFrame(const wxString& title, const wxPoint& pos,
@@ -321,9 +325,33 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
 
             MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
             
-            /*
-             * ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
-             */
+            
+            ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
+            short int c = -1;
+            vector<string> data;
+            while (getline(infile, info)) {
+                /* deque, pQueue, queue, stack; */
+                if (c == -1) {
+                    continue;
+                    c++;   
+                }
+                data.push_back(info);
+                queue.enqueue(new Node(data.at(c));
+                if (data.at(c).find("Platinum") != std::string::npos || data.at(c).find("Gold") != std::string::npos) {
+                    pQueue.enqueue(new Node(&data.at(c)));
+                }
+                if (data.at(c).find("Vacation") != std::string::npos) {
+                    deque.enqueueHead(&data.at(c));
+                }
+                if (data.at(c).find("Business") != std::string::npos) {
+                    deque.enqueue(&data.at(c));
+                }
+                if (data.at(c).find("Walk-in") != std::string::npos) {
+                    stack.push(&data.at(c));
+                }
+                
+            }
+             
             // Set the Title
             SetTitle(wxString(wxT("Dummy")));
         }

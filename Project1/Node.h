@@ -11,7 +11,13 @@ class Node {
         
         Node(std::string *data) {
             next = nullptr;
-            this.data = data;
+            this->data = data;
+        }
+        
+        Node(std::string *data, int id) {
+            next = nullptr;
+            this->ID = id;
+            this->data = data;
         }
         
         std::string showData();
@@ -24,7 +30,7 @@ std::string Node::showData() {
 }
 
 void Node::setID(int id) {
-    this.ID = id
+    this->ID = id
 }
 
 int Node::getID() {

@@ -5,12 +5,12 @@
 #include <"Queue.h">
 
 class Deque : public Queue{
-    pubilc:
-        void enqueueHead();
-        void dequeueTail(Node*);
+    public:
+        void enqueueHead(Node*);
+        void dequeueTail();
 };
 
-void Deque::enqueueHead(Node *element) {
+void Deque::enqueueHead(Node* element) {
     if (isEmpty()) {
         head = element;
         tail = element;
@@ -24,16 +24,18 @@ void Deque::dequeueTail() {
     if (isEmpty())
         return;
     
-    Node *temp = head;
-    while (temp->next != tail) {
-        temp = temp->next;
-    }
     if (head == tail) {
         head = nullptr;
         delete tail;
         tail = nullptr;
-        return
+        return;
     }
+    
+    Node *temp = head;
+    while (temp->next != tail ) {
+        temp = temp->next;
+    }
+    
     delete tail;
     tail = temp;
     tail->next = nullptr;
