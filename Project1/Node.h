@@ -30,7 +30,7 @@ std::string Node::showData() {
 }
 
 void Node::setID(int id) {
-    this->ID = id
+    this->ID = id;
 }
 
 int Node::getID() {

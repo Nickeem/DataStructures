@@ -4,20 +4,21 @@
 #include <"Node.h">
 
 class Stack {
-    Node *head;
-    Node *tail;
-    
-    Stack() {
-        head = nullptr;
-        tail = nullptr;
-    }
-    
-    bool isEmpty();
-    std::string showHead()();
-    std::string showTail();
-    void push(Node* element);
-    void pop();
-    std::string display();
+    public:
+        Node *head;
+        Node *tail;
+        
+        Stack() {
+            head = nullptr;
+            tail = nullptr;
+        }
+        
+        bool isEmpty();
+        std::string showHead();
+        std::string showTail();
+        void push(Node* element);
+        void pop();
+        std::string display();
 };
 
 bool Stack::isEmpty() {
@@ -51,10 +52,10 @@ void Stack::pop() {
 }
 
 std::string Stack::display() {
-    string fullData = "";
+    std::string fullData = "";
     Node *temp = head;
     while (temp != nullptr) {
-        data = temp->showData() + '\n';
+        fullData += temp->showData() + '\n';
         temp = temp->next;
     }
     return fullData;
