@@ -331,8 +331,10 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             
             ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
             short int c = -1;
-            //vector<string> fileData;
+            
             string info;
+            /*int lineCount = count(istreambuf_iterator<char>(infile), istreambuf_iterator<char>(), '\n') + 1;
+            fileData.resize(lineCount); // number of values in vector are max lines in file;*/
             
             while (getline(infile, info)) {
                 if (c == -1 ) {
@@ -349,7 +351,9 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 
                 // if substrings are in info/lines fill ADT
                 if (info.find("Platinum") != std::string::npos || info.find("Gold") != std::string::npos) {
-                    //pQueue.enqueue(new Node(&info));
+                    int position = info.find(",");
+                    int id = stoi(info.substr(0,position-1)); // substring id in file and parse to int
+                    //pQueue.enqueue(new Node(info, id));
                 }
                 if (info.find("Vacation") != std::string::npos) {
                     deque.enqueueHead(new Node(info));
@@ -361,7 +365,8 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                     stack.push(new Node(info));
                 } 
                 //c++;
-            }
+            
+            } 
              
             // Set the Title
             SetTitle(wxString(wxT("Dummy")));
@@ -490,7 +495,15 @@ void ProjectFrame::deque_DQ_Tail(wxCommandEvent& event) {
 //=============================================================================
 //============== Definition for the Stack Functions ===========================
 //=============================================================================
-void ProjectFrame::stackDisplay(wxCommandEvent& event) {}
-void ProjectFrame::stackHead(wxCommandEvent& event) {}
-void ProjectFrame::stackTail(wxCommandEvent& event) {}
-void ProjectFrame::stackPop(wxCommandEvent& event) {}
+void ProjectFrame::stackDisplay(wxCommandEvent& event) {
+    MainEditBox->SetValue(stack.display());
+}
+void ProjectFrame::stackHead(wxCommandEvent& event) {
+    MainEditBox->SetValue(stack.showHead());
+}
+void ProjectFrame::stackTail(wxCommandEvent& event) {
+    MainEditBox->SetValue(stack.showTail());
+}
+void ProjectFrame::stackPop(wxCommandEvent& event) {
+    stack.pop();
+}
