@@ -1,8 +1,8 @@
 #ifndef  PRIORITYQUEUE_H
 #define PRIORITYQUEUE_H
 #include <iostream>
-#include <"Node.h">
-#include <"Queue.h">
+#include "Node.h"
+#include "Queue.h"
 
 class PriorityQueue: public Queue {
     public:
@@ -37,3 +37,5 @@ void PriorityQueue::enqueue(Node* element) {
    temp->next = element;
     
 }
+
+#endif

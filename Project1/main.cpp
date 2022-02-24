@@ -6,11 +6,11 @@
 
 #include <fstream> 
 #include <string> 
-#include <"Deque.h">
-#include <"Node.h">
-#include <"PriorityQueue.h">
-#include <"Queue.h">
-#include <"Stack.h">
+#include "Deque.h"
+#include "Node.h"
+#include "PriorityQueue.h"
+#include "Queue.h"
+#include "Stack.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
 using namespace std;
@@ -28,6 +28,7 @@ class ProjectFrame: public wxFrame
         PriorityQueue pQueue;
         Queue queue;
         Stack stack;
+        vector<string> fileData;
 
      public:
         ProjectFrame(const wxString& title, const wxPoint& pos,
@@ -244,7 +245,7 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
 
 
 
-    //Set up the panel for data display
+    //Set up the panel for fileData display
 //===============================================================================
 //================= DO NOT CHANGE THE CODE IN THIS SECTION ======================
 //===============================================================================
@@ -253,7 +254,7 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     wxBoxSizer  *vbox      = new wxBoxSizer(wxVERTICAL);        //Vertical sizer for main window
     wxBoxSizer  *hbox1     = new wxBoxSizer(wxHORIZONTAL);      //Horizontal sizer for main window
 
-    //Add two textboxes to the panel for data display
+    //Add two textboxes to the panel for fileData display
     wxBoxSizer  *hbox2     = new wxBoxSizer(wxHORIZONTAL);        //Horizontal sizer for filename window
     wxBoxSizer  *hbox3     = new wxBoxSizer(wxHORIZONTAL);        //Horizontal sizer for display window
 
@@ -328,28 +329,30 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             
             ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
             short int c = -1;
-            vector<string> data;
+            //vector<string> fileData;
+            string info;
+            
             while (getline(infile, info)) {
                 /* deque, pQueue, queue, stack; */
                 if (c == -1) {
-                    continue;
                     c++;   
+                    continue;
                 }
-                data.push_back(info);
-                queue.enqueue(new Node(data.at(c));
-                if (data.at(c).find("Platinum") != std::string::npos || data.at(c).find("Gold") != std::string::npos) {
-                    pQueue.enqueue(new Node(&data.at(c)));
+                fileData.push_back(info);
+                queue.enqueue(new Node(&fileData.at(c)));
+                if (fileData.at(c).find("Platinum") != std::string::npos || fileData.at(c).find("Gold") != std::string::npos) {
+                    //pQueue.enqueue(new Node(&fileData.at(c)));
                 }
-                if (data.at(c).find("Vacation") != std::string::npos) {
-                    deque.enqueueHead(&data.at(c));
+                if (fileData.at(c).find("Vacation") != std::string::npos) {
+                    deque.enqueueHead(new Node(&fileData.at(c)));
                 }
-                if (data.at(c).find("Business") != std::string::npos) {
-                    deque.enqueue(&data.at(c));
+                if (fileData.at(c).find("Business") != std::string::npos) {
+                    deque.enqueueTail(new Node(&fileData.at(c)));
                 }
-                if (data.at(c).find("Walk-in") != std::string::npos) {
-                    stack.push(&data.at(c));
+                if (fileData.at(c).find("Walk-in") != std::string::npos) {
+                    stack.push(new Node(&fileData.at(c)));
                 }
-                
+                c++;
             }
              
             // Set the Title
@@ -422,7 +425,10 @@ void ProjectFrame::About(wxCommandEvent& event) {}
 //=============================================================================
 //============== Definition for the Queue Functions ===========================
 //=============================================================================
-void ProjectFrame::queueDisplay(wxCommandEvent& event) {}
+void ProjectFrame::queueDisplay(wxCommandEvent& event) {
+    MainEditBox->Clear();
+    MainEditBox->AppendText(queue.showHead());
+}
 void ProjectFrame::queueHead(wxCommandEvent& event) {}
 void ProjectFrame::queueTail(wxCommandEvent& event) {}
 void ProjectFrame::queueDequeue(wxCommandEvent& event) {}
