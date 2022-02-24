@@ -6,6 +6,7 @@
 
 #include <fstream> 
 #include <string> 
+#include <algorithm>
 #include "Deque.h"
 #include "Node.h"
 #include "PriorityQueue.h"
@@ -29,6 +30,7 @@ class ProjectFrame: public wxFrame
         Queue queue;
         Stack stack;
         vector<string> fileData;
+        string header;
 
      public:
         ProjectFrame(const wxString& title, const wxPoint& pos,
@@ -333,26 +335,32 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             string info;
             
             while (getline(infile, info)) {
-                /* deque, pQueue, queue, stack; */
-                if (c == -1) {
-                    c++;   
+                if (c == -1 ) {
+                    c++;  
+                    header = info;
                     continue;
                 }
-                fileData.push_back(info);
-                queue.enqueue(new Node(&fileData.at(c)));
-                if (fileData.at(c).find("Platinum") != std::string::npos || fileData.at(c).find("Gold") != std::string::npos) {
-                    //pQueue.enqueue(new Node(&fileData.at(c)));
+                if(info.find_first_not_of(' ') == std::string::npos)
+                    continue; // if string is only whitespaces skip
+
+                //fileData.push_back(info);
+
+                queue.enqueue(new Node(info));
+                
+                // if substrings are in info/lines fill ADT
+                if (info.find("Platinum") != std::string::npos || info.find("Gold") != std::string::npos) {
+                    //pQueue.enqueue(new Node(&info));
                 }
-                if (fileData.at(c).find("Vacation") != std::string::npos) {
-                    deque.enqueueHead(new Node(&fileData.at(c)));
+                if (info.find("Vacation") != std::string::npos) {
+                    deque.enqueueHead(new Node(info));
                 }
-                if (fileData.at(c).find("Business") != std::string::npos) {
-                    deque.enqueueTail(new Node(&fileData.at(c)));
+                if (info.find("Business") != std::string::npos) {
+                    deque.enqueueTail(new Node(info));
                 }
-                if (fileData.at(c).find("Walk-in") != std::string::npos) {
-                    stack.push(new Node(&fileData.at(c)));
-                }
-                c++;
+                if (info.find("Walk-in") != std::string::npos) {
+                    stack.push(new Node(info));
+                } 
+                //c++;
             }
              
             // Set the Title
@@ -427,11 +435,19 @@ void ProjectFrame::About(wxCommandEvent& event) {}
 //=============================================================================
 void ProjectFrame::queueDisplay(wxCommandEvent& event) {
     MainEditBox->Clear();
+    MainEditBox->AppendText(queue.display());
+}
+void ProjectFrame::queueHead(wxCommandEvent& event) {
+    MainEditBox->Clear();
     MainEditBox->AppendText(queue.showHead());
 }
-void ProjectFrame::queueHead(wxCommandEvent& event) {}
-void ProjectFrame::queueTail(wxCommandEvent& event) {}
-void ProjectFrame::queueDequeue(wxCommandEvent& event) {}
+void ProjectFrame::queueTail(wxCommandEvent& event) {
+    MainEditBox->Clear();
+    MainEditBox->AppendText(queue.showTail());
+}
+void ProjectFrame::queueDequeue(wxCommandEvent& event) {
+    queue.dequeue();
+}
 
 
 
@@ -448,11 +464,26 @@ void ProjectFrame::priorityDequeue(wxCommandEvent& event) {}
 //=============================================================================
 //============== Definition for the Deque Functions ===========================
 //=============================================================================
-void ProjectFrame::dequeDisplay(wxCommandEvent& event) {}
-void ProjectFrame::dequeHead(wxCommandEvent& event) {}
-void ProjectFrame::dequeTail(wxCommandEvent& event) {}
-void ProjectFrame::deque_DQ_Head(wxCommandEvent& event) {}
-void ProjectFrame::deque_DQ_Tail(wxCommandEvent& event) {}
+void ProjectFrame::dequeDisplay(wxCommandEvent& event) {
+    //MainEditBox->Clear();
+    MainEditBox->SetValue(deque.display());
+}
+void ProjectFrame::dequeHead(wxCommandEvent& event) {
+    //MainEditBox->Clear();
+    MainEditBox->SetValue(deque.showHead());
+}
+void ProjectFrame::dequeTail(wxCommandEvent& event) {
+    //MainEditBox->Clear();
+    MainEditBox->SetValue(deque.showTail());
+}
+void ProjectFrame::deque_DQ_Head(wxCommandEvent& event) {
+    //MainEditBox->Clear();
+    deque.dequeueHead();
+}
+void ProjectFrame::deque_DQ_Tail(wxCommandEvent& event) {
+    //MainEditBox->Clear();
+    deque.dequeueTail();
+}
 
 
 

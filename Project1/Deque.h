@@ -9,6 +9,7 @@ class Deque : public Queue{
         void enqueueHead(Node*);
         void enqueueTail(Node*);
         void dequeueTail();
+        void dequeueHead();
 };
 
 void Deque::enqueueHead(Node* element) {
@@ -45,6 +46,10 @@ void Deque::dequeueTail() {
     tail = temp;
     tail->next = nullptr;
     
+}
+
+void Deque::dequeueHead() {
+    dequeue();
 }
 
 #endif

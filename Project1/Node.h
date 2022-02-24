@@ -4,20 +4,20 @@
 
 class Node {
     private:
-        std::string *data;
+        std::string data;
     public:
         Node *next;
         int ID;
         
-        Node(std::string *data) {
+        Node(std::string Data) {
             next = nullptr;
-            this->data = data;
+            data = Data;
         }
         
-        Node(std::string *data, int id) {
+        Node(std::string Data, int id) {
             next = nullptr;
-            this->ID = id;
-            this->data = data;
+            ID = id;
+            data = Data;
         }
         
         std::string showData();
@@ -26,11 +26,11 @@ class Node {
 };
 
 std::string Node::showData() {
-    return *data;
+    return data;
 }
 
 void Node::setID(int id) {
-    this->ID = id;
+    ID = id;
 }
 
 int Node::getID() {
