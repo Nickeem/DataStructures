@@ -16,25 +16,25 @@ void PriorityQueue::enqueue(Node* element) {
         tail = element;
         return;
     }
-    if (head->getID() > element->getID()) {
+    
+    if (element->getID() < head->getID()) {
         element->next = head;
         head = element;
         return;
     }
-    Node *temp = head;
-     do{
-        if (temp->next == nullptr) {break;}
+    
+    Node * temp = head;
+    while (temp->next != nullptr) {
+        if (element->getID() < temp->next->getID() )
+        {
+            element->next = temp->next;
+            temp->next = element;
+            return;
+        }
         temp = temp->next;
-    } while (temp->next->getID() < element->getID());
-    
-    if (temp->next == nullptr) {
-        temp->next = element;
-        tail = element;
-        return;
     }
-    
-   element->next = temp->next;
-   temp->next = element;
+    tail->next = element;
+    tail = element;
     
 }
 

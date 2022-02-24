@@ -202,35 +202,35 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     menuBar->Append(stackMenu, wxT("Stack"));
     menuBar->Append(helpMenu, wxT("Help"));
     //Append the sub-menu items to the Main Menu items
-    fileMenu->Append(ID_OpenFile, wxT("Open File"), wxT(""));
-    fileMenu->Append(ID_Display, wxT("Display File"), wxT(""));
-    fileMenu->Append(ID_Save, wxT("Save"), wxT(""));
-    fileMenu->Append(ID_SaveAs, wxT("Save As"), wxT(""));
-    fileMenu->Append(ID_Exit, wxT("Exit"), wxT(""));
+    fileMenu->Append(ID_OpenFile, wxT("Open File"), wxT("Load file into application"));
+    fileMenu->Append(ID_Display, wxT("Display File"), wxT("View contents of opened file"));
+    fileMenu->Append(ID_Save, wxT("Save"), wxT("Save File"));
+    fileMenu->Append(ID_SaveAs, wxT("Save As"), wxT("Save File with new name"));
+    fileMenu->Append(ID_Exit, wxT("Exit"), wxT("Close Application"));
     
-    queueMenu->Append( ID_Q_Display , wxT("Display All") );
-    queueMenu->Append( ID_Q_Head , wxT("Show Head") );
-    queueMenu->Append( ID_Q_Tail , wxT("Show Tail") );
-    queueMenu->Append( ID_Q_Dequeue , wxT("Dequeue") );
+    queueMenu->Append( ID_Q_Display , wxT("Display All"), wxT("Display all records in queue"));
+    queueMenu->Append( ID_Q_Head , wxT("Show Head"),wxT("Front of Queue"));
+    queueMenu->Append( ID_Q_Tail , wxT("Show Tail"), wxT("Back of Queue"));
+    queueMenu->Append( ID_Q_Dequeue , wxT("Dequeue"), wxT("Remove front of Queue"));
     
-    priorityQueueMenu->Append( ID_PQ_Display , wxT("Display All") );
-    priorityQueueMenu->Append( ID_PQ_Head , wxT("Show Head") );
-    priorityQueueMenu->Append( ID_PQ_Tail , wxT("Show Tail") );
-    priorityQueueMenu->Append( ID_PQ_Dequeue , wxT("Dequeue") );
+    priorityQueueMenu->Append( ID_PQ_Display , wxT("Display All"), wxT("Platinum and Gold members only in ascending order"));
+    priorityQueueMenu->Append( ID_PQ_Head , wxT("Show Head"), wxT("Front of Priority Queue"));
+    priorityQueueMenu->Append( ID_PQ_Tail , wxT("Show Tail"), wxT("Back of Priority Queue"));
+    priorityQueueMenu->Append( ID_PQ_Dequeue , wxT("Dequeue"), wxT("Remove frony of Priority Queue"));
     
-    dequeMenu->Append( ID_D_Display , wxT("Display All") );
-    dequeMenu->Append( ID_D_Head , wxT("Show Head") );
-    dequeMenu->Append( ID_D_Tail , wxT("Show Tail") );
-    dequeMenu->Append( ID_D_DqHead , wxT("Dequeue Head") );
-    dequeMenu->Append( ID_D_DqTail , wxT("Dequeue Tail") );
+    dequeMenu->Append( ID_D_Display , wxT("Display All"), wxT("Vacation and business guests (head and tail respectively)"));
+    dequeMenu->Append( ID_D_Head , wxT("Show Head"), wxT("Front of Deque"));
+    dequeMenu->Append( ID_D_Tail , wxT("Show Tail"), wxT("Back of Deque"));
+    dequeMenu->Append( ID_D_DqHead , wxT("Dequeue Head"), wxT("Remove front of Deque"));
+    dequeMenu->Append( ID_D_DqTail , wxT("Dequeue Tail"), wxT("Remove back of Deque"));
     
-    stackMenu->Append( ID_S_Display , wxT("Display All") );
-    stackMenu->Append( ID_S_Head , wxT("Show Head") );
-    stackMenu->Append( ID_S_Tail , wxT("Show Tail") );
-    stackMenu->Append( ID_S_Pop , wxT("Pop") );
+    stackMenu->Append( ID_S_Display , wxT("Display All"), wxT("Walk-in guests only"));
+    stackMenu->Append( ID_S_Head , wxT("Show Head"), wxT("Top of Stack"));
+    stackMenu->Append( ID_S_Tail , wxT("Show Tail"), wxT("Bottom of Stack"));
+    stackMenu->Append( ID_S_Pop , wxT("Pop"), wxT("Remove Top of Stack"));
     
-    helpMenu->Append( ID_About , wxT("About"));
-    helpMenu->Append( ID_Exit , wxT("Exit"));
+    helpMenu->Append( ID_About , wxT("About"), wxT("Program Info"));
+    helpMenu->Append( ID_Exit , wxT("Exit"), wxT(""));
     
     
 
@@ -241,6 +241,9 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     SetStatusText( wxT("Ready..."), 0);
     SetStatusText( wxT("Nickeem Payne-Deacon"), 1);
     SetStatusText( wxT("400008889"), 2);
+    
+    fileMenu->SetHelpString(0, wxT("Basic File Options"));
+    queueMenu->SetHelpString(0, wxT("All Records"));
 
     //Put text in the status bar
 
@@ -353,7 +356,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 if (info.find("Platinum") != std::string::npos || info.find("Gold") != std::string::npos) {
                     int position = info.find(",");
                     int id = stoi(info.substr(0,position-1)); // substring id in file and parse to int
-                    //pQueue.enqueue(new Node(info, id));
+                    pQueue.enqueue(new Node(info, id));
                 }
                 if (info.find("Vacation") != std::string::npos) {
                     deque.enqueueHead(new Node(info));
@@ -459,10 +462,18 @@ void ProjectFrame::queueDequeue(wxCommandEvent& event) {
 //=============================================================================
 //============== Definition for the Priority Queue Functions ==================
 //=============================================================================
-void ProjectFrame::priorityQueueDisplay(wxCommandEvent& event) {}
-void ProjectFrame::priorityQueueHead(wxCommandEvent& event) {}
-void ProjectFrame::priorityQueueTail(wxCommandEvent& event) {}
-void ProjectFrame::priorityDequeue(wxCommandEvent& event) {}
+void ProjectFrame::priorityQueueDisplay(wxCommandEvent& event) {
+    MainEditBox->SetValue(pQueue.display());
+}
+void ProjectFrame::priorityQueueHead(wxCommandEvent& event) {
+    MainEditBox->SetValue(pQueue.showHead());
+}
+void ProjectFrame::priorityQueueTail(wxCommandEvent& event) {
+    MainEditBox->SetValue(pQueue.showTail());
+}
+void ProjectFrame::priorityDequeue(wxCommandEvent& event) {
+    pQueue.dequeue();
+}
 
 
 
