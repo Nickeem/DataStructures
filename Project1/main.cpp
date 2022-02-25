@@ -12,6 +12,7 @@
 #include "PriorityQueue.h"
 #include "Queue.h"
 #include "Stack.h"
+#include "InfoDialog.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
 using namespace std;
@@ -124,6 +125,9 @@ BEGIN_EVENT_TABLE ( ProjectFrame, wxFrame )
    	EVT_MENU ( ID_Save,       ProjectFrame::OnSave )
    	EVT_MENU ( ID_SaveAs,     ProjectFrame::OnSaveAs )
    	EVT_MENU ( ID_Exit,       ProjectFrame::OnExit )
+    
+    // About menu item
+    EVT_MENU ( ID_About,       ProjectFrame::About)
 
 	// Events for the "Queue" menu items
     EVT_MENU( ID_Q_Display , ProjectFrame::queueDisplay)
@@ -435,23 +439,27 @@ void ProjectFrame::OnExit(wxCommandEvent& event)
     }
 
 
-void ProjectFrame::About(wxCommandEvent& event) {}
+void ProjectFrame::About(wxCommandEvent& event) {
+    InfoDialog *infoDialog = new InfoDialog( wxT("About Program"), wxPoint(200,300), wxSize(450,250) );
+    if (infoDialog->ShowModal() == wxID_OK)
+    {
+        infoDialog->Close();
+    }
+    infoDialog->Destroy();
+}
 
 
 //=============================================================================
 //============== Definition for the Queue Functions ===========================
 //=============================================================================
 void ProjectFrame::queueDisplay(wxCommandEvent& event) {
-    MainEditBox->Clear();
-    MainEditBox->AppendText(queue.display());
+    MainEditBox->SetValue(queue.display());
 }
 void ProjectFrame::queueHead(wxCommandEvent& event) {
-    MainEditBox->Clear();
-    MainEditBox->AppendText(queue.showHead());
+    MainEditBox->SetValue(queue.showHead());
 }
 void ProjectFrame::queueTail(wxCommandEvent& event) {
-    MainEditBox->Clear();
-    MainEditBox->AppendText(queue.showTail());
+    MainEditBox->SetValue(queue.showTail());
 }
 void ProjectFrame::queueDequeue(wxCommandEvent& event) {
     queue.dequeue();
