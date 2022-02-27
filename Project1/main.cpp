@@ -376,7 +376,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             } 
              
             // Set the Title
-            SetTitle(wxString(wxT("Dummy")));
+            SetTitle(wxString(wxT("COMP2611 – Data Structures Project #1")));
         }
 
     }
@@ -408,7 +408,7 @@ void ProjectFrame::OnSaveAs(wxCommandEvent& event)
                 MainEditBox->SaveFile(CurrentFilePath); // Save the file to the selected path
 
                 // Set the Title to reflect the file open
-                SetTitle(wxString(wxT("Dummy Again")));
+                SetTitle(wxString(wxT("COMP2611 – Data Structures Project #1")));
         }
 
     }
