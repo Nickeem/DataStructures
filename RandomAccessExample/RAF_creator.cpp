@@ -8,8 +8,8 @@ using namespace std;
 struct record
 {
     int ID;
-    char firstname[10];
-    char surname[10];
+    char firstname[16];
+    char surname[16];
     char destination[15];
     char membership[10];
     char booking[10];
