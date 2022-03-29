@@ -7,7 +7,7 @@
 #include <fstream> 
 #include <string> 
 // include data Structures
-#include ".h"
+// #include ".h"
 
 #include "InfoDialog.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
@@ -324,6 +324,32 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     rbtMenu->Append( ID_RBT_Display_PrO, wxT("Preorder"), wxT("Display the preorder traversal result of the Red-Black tree"));
     rbtMenu->Append( ID_RBT_Display_PoO, wxT("Postorder"), wxT("Display the postorder traversal result of the Red-Black tree"));
     
+    splayMenu->Append( ID_SplayT_Create, wxT("CreateSplay"), wxT("Create the Splay tree from the RAF"));
+    splayMenu->Append( ID_SplayT_Add, wxT("Add a Record"),wxT("Manually add a record to the Splay tree"));
+    splayMenu->Append( ID_SplayT_Delete, wxT("Delete a Record"), wxT("Delete a specified record from the Splay tree"));
+    splayMenu->Append( ID_SplayT_Display_IO, wxT("Inorder"), wxT("Display the inorder traversal result of the Splay tree"));
+    splayMenu->Append( ID_SplayT_Display_PrO, wxT("Preorder"), wxT("Display the preorder traversal result of the Splay tree"));
+    splayMenu->Append( ID_SplayT_Display_PoO, wxT("Postorder"), wxT("Display the postorder traversal result of the Splay tree"));
+    
+    heapMenu->Append( ID_Heap_Create, wxT("Create Heap"), wxT("Create the MinHeap tree from the RAF"));
+    heapMenu->Append( ID_Heap_Add, wxT("Add a Record"), wxT("Manually add a record to the MinHeap"));
+    heapMenu->Append( ID_Heap_Delete, wxT("Delete a Record"), wxT("Delete a specified record from the MinHeap tree"));
+    heapMenu->Append( ID_Heap_Display, wxT("Display All"), wxT("Display ALL the inorder in the MinHeap tree"));
+    heapMenu->Append( ID_Heap_Sort, wxT("Heap Sort"), wxT("Display the results of the Heap Sort of the MinHeap tree"));
+    
+    btMenu->Append( ID_BT_Create, wxT("Create B-Tree"), wxT("Create the B-Tree from the RAF"));
+    btMenu->Append( ID_BT_Create, wxT("Add a Record"), wxT("Manually add a record to the B-Tree"));
+    btMenu->Append( ID_BT_Create, wxT("Delete a Record"), wxT("Delete a specified record from the B-Tree"));
+    btMenu->Append( ID_BT_Create, wxT("Display ALL"), wxT("Display ALL the records in the B-Tree"));
+    
+     setsMenu->Append( ID_Set_Create, wxT("Create Sets"), wxT("Create SetA and Set B from the RAF"));
+     setsMenu->Append( ID_Set_AddA, wxT("Add Data to SetA"), wxT("Manually add a record to Set A"));
+     setsMenu->Append( ID_Set_AddB, wxT("Add Data to SetB"), wxT("SetB Manually add a record to Set B"));
+     setsMenu->Append( ID_Set_DisplayA, wxT("Display SetA"), wxT("Display ALL the records in jn Set A"));
+     setsMenu->Append( ID_Set_DisplayB, wxT("Display SetB"), wxT("Display ALL the records in jn Set B"));
+     setsMenu->Append( ID_Set_DisplayIntersection, wxT("Display Intersection"), wxT("Display the Intersection records of Set A and Set B"));
+     setsMenu->Append( ID_Set_DisplayUnion, wxT("Display Union"), wxT("Display Union Display the Union records of Set A and Set B"));
+     
     
     helpMenu->Append( ID_About , wxT("About"), wxT("Program Info"));
     helpMenu->Append( ID_Exit , wxT("Exit"), wxT(""));
@@ -339,7 +365,6 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     SetStatusText( wxT("400008889"), 2);
     
     fileMenu->SetHelpString(0, wxT("Basic File Options"));
-    queueMenu->SetHelpString(0, wxT("All Records"));
 
     //Put text in the status bar
 
@@ -418,7 +443,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
 
         if (OpenDialog->ShowModal() == wxID_OK)    // if the user click "Open" instead of "cancel"
         {
-            // Sets our current document to the file the user selected
+           /* // Sets our current document to the file the user selected
             CurrentFilePath = OpenDialog->GetPath();
 
             //Clean up filename textbox and Display file name in filename textbox
@@ -432,8 +457,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             short int c = -1;
             
             string info;
-            /*int lineCount = count(istreambuf_iterator<char>(infile), istreambuf_iterator<char>(), '\n') + 1;
-            fileData.resize(lineCount); // number of values in vector are max lines in file;*/
+
             
             while (getline(infile, info)) {
                 if (c == -1 ) {
@@ -465,7 +489,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 } 
                 //c++;
             
-            } 
+            } */
              
             // Set the Title
             SetTitle(wxString(wxT("COMP2611 – Data Structures Project #1")));
