@@ -10,6 +10,7 @@
 #ifndef BST_BSTree_h
 #define BST_BSTree_h
 
+#include <cstring>
 
 class BSTNode
     {
@@ -26,17 +27,26 @@ class BSTNode
         public:
             // Constructor functions
             BSTNode(){right = left = NULL; ClientID = -99;}
-            BSTNode(int val){ClientID = val; right = left = NULL;}
+            BSTNode(int id, char* fname, char * sname, char * dest, char * membership, char * booking ){
+                ClientID = id; 
+                right = left = NULL;
+                
+                strcpy(FirstName , fname);
+                strcpy(Surname, sname);
+                strcpy(Destination, dest);
+                strcpy(Membership, membership);
+                strcpy(Booking, booking);
+}
     
             // Accessor functions
             BSTNode* getLeft()  {return left;};
             BSTNode* getRight() {return right;}
             int getID()       {return ClientID;}
-            char[10] getFirstName() {return FirstName;}
-            char[10] getSurname() { return Surname;}
-            char[15] getDestination() {return Destination; }
-            char[10] getMembership() {return Membership;}
-            char[10] getBooking{return Booking;}
+            char* getFirstName() {return FirstName;}
+            char* getSurname() { return Surname;}
+            char* getDestination() {return Destination; }
+            char* getMembership() {return Membership;}
+            char* getBooking() {return Booking;}
             string getData();
 
             // Mutator functions
@@ -65,17 +75,17 @@ string BSTNode::getData() {
     
     data += Booking;
     
-    return data
+    return data;
 }
 void BSTNode::copyData(BSTNode* ptr)
     {
         // Copy all te attributes from ptr
         ClientID = ptr->getID();
-        FirstName = ptr->getFirstName();
-        Surname = ptr->getSurname();
-        Destination = ptr->getDestination();
-        Membership = ptr->getMembership();
-        Booking = ptr->getBooking();
+        strcpy(FirstName, ptr->getFirstName());
+        strcpy(Surname, ptr->getSurname());
+        strcpy(Destination, ptr->getDestination());
+        strcpy(Membership, ptr->getMembership());
+        strcpy(Booking, ptr->getBooking());
     }
 
 
@@ -110,7 +120,7 @@ class BST
     
             // Mutator functions
             void purge()         { root = NULL;}
-            void insert(int id, char* fname, char* sname, char* dest, char* membership, char* booking) { root = insertHelper(root, val, fname, sname, dest, membership, booking); }
+            void insert(int id, char* fname, char* sname, char* dest, char* membership, char* booking) { root = insertHelper(root, id, fname, sname, dest, membership, booking); }
             void remove(int val) { root = deleteHelper(root, val);}
         
             // Accessor functions

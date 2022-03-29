@@ -4,15 +4,17 @@
 #  include <wx/wx.h>
 #endif
 
+using namespace std;
+
 #include <fstream> 
 #include <string> 
 // include data Structures
-// #include ".h"
+#include "BSTree.h"
 
 #include "InfoDialog.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
-using namespace std;
+
 
 class MyApp: public wxApp
 {
@@ -31,6 +33,7 @@ class ProjectFrame: public wxFrame
          BTree b_tree;
          Set set;
          */
+        string opened_fileName;
 
      public:
         ProjectFrame(const wxString& title, const wxPoint& pos,
@@ -443,7 +446,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
 
         if (OpenDialog->ShowModal() == wxID_OK)    // if the user click "Open" instead of "cancel"
         {
-           /* // Sets our current document to the file the user selected
+            // Sets our current document to the file the user selected
             CurrentFilePath = OpenDialog->GetPath();
 
             //Clean up filename textbox and Display file name in filename textbox
@@ -451,7 +454,8 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             filenameTextBox->AppendText(CurrentFilePath);
 
             MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
-            
+            opened_fileName = CurrentFilePath.mb_str();
+            /*
             
             ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
             short int c = -1;
@@ -642,6 +646,19 @@ void ProjectFrame::stackTail(wxCommandEvent& event) {
 void ProjectFrame::stackPop(wxCommandEvent& event) {
     stack.pop();
 } */
+
+// Struct for transfering data to ADTs
+struct record
+{
+    int id;
+    char firstname[10];
+    char surname[10];
+    char destination[15];
+    char membership[10];
+    char booking[10];
+};
+typedef struct record Record;
+
 
 void ProjectFrame::createBST(wxCommandEvent& event) { }
 void ProjectFrame::BST_addRecord(wxCommandEvent& event) { }
