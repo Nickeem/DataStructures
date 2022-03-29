@@ -419,10 +419,20 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
 
 
 //=====================================================================
-//=========== Other Support Functions =================================
+//=========== Other Support =================================
 //=====================================================================
 
-
+// Struct for transfering data to from random access file
+struct record
+{
+    int id;
+    char firstname[10];
+    char surname[10];
+    char destination[15];
+    char membership[10];
+    char booking[10];
+};
+typedef struct record Record;
 
 
 /**************************************************************************
@@ -451,10 +461,34 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
 
             //Clean up filename textbox and Display file name in filename textbox
             filenameTextBox->Clear();
-            filenameTextBox->AppendText(CurrentFilePath);
-
-            MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
+            //filenameTextBox->AppendText(CurrentFilePath);
+            
+            MainEditBox->Clear();
+            //MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
             opened_fileName = CurrentFilePath.mb_str();
+            
+            fstream infile(opened_fileName, ios::in|ios::binary);
+            Record rec;
+            infile.seekg(0);
+            string output = "";
+            
+            while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                output += to_string(rec.id);
+                output += "\t";
+                output += rec.firstname;
+                output += "\t";
+                output += rec.surname;
+                output += "\t";
+                output += rec.destination;
+                output += "\t";
+                output += rec.membership;
+                output += "\t";
+                output += rec.booking;
+                output += "\n";
+                MainEditBox->AppendText(output);
+            }
             /*
             
             ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
@@ -646,18 +680,6 @@ void ProjectFrame::stackTail(wxCommandEvent& event) {
 void ProjectFrame::stackPop(wxCommandEvent& event) {
     stack.pop();
 } */
-
-// Struct for transfering data to ADTs
-struct record
-{
-    int id;
-    char firstname[10];
-    char surname[10];
-    char destination[15];
-    char membership[10];
-    char booking[10];
-};
-typedef struct record Record;
 
 
 void ProjectFrame::createBST(wxCommandEvent& event) { }
