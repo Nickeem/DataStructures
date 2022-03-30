@@ -8,6 +8,22 @@ using namespace std;
 
 #include <fstream> 
 #include <string> 
+#include <sstream>
+#include <iomanip>
+
+
+// record struct
+struct record
+{
+    int id;
+    char firstname[10];
+    char surname[10];
+    char destination[15];
+    char membership[10];
+    char booking[10];
+};
+typedef struct record Record;
+
 // include data Structures
 #include "BSTree.h"
 
@@ -423,16 +439,7 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
 //=====================================================================
 
 // Struct for transfering data to from random access file
-struct record
-{
-    int id;
-    char firstname[10];
-    char surname[10];
-    char destination[15];
-    char membership[10];
-    char booking[10];
-};
-typedef struct record Record;
+
 
 
 /**************************************************************************
@@ -470,23 +477,33 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             fstream infile(opened_fileName, ios::in|ios::binary);
             Record rec;
             infile.seekg(0);
+            stringstream output_stream;
             string output = "";
             
             while (!infile.eof())
             {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
-                output += to_string(rec.id);
+                output_stream << left << setw(20) << rec.id 
+                << left << setw(20) << rec.firstname 
+                << left << setw(20) << rec.surname 
+                << left << setw(20) << rec.destination 
+                << left << setw(20) << rec.membership 
+                << left << setw(20) << rec.booking 
+                << endl; 
+                
+                /*output += to_string(rec.id);
                 output += "\t";
                 output += rec.firstname;
-                output += "\t";
+                output += "\t\t";
                 output += rec.surname;
-                output += "\t";
+                output += "\t\t";
                 output += rec.destination;
-                output += "\t";
+                output += "\t\t";
                 output += rec.membership;
-                output += "\t";
+                output += "\t\t";
                 output += rec.booking;
-                output += "\n";
+                output += "\n"; */
+                output = output_stream.str();
                 MainEditBox->AppendText(output);
             }
             /*
@@ -683,13 +700,38 @@ void ProjectFrame::stackPop(wxCommandEvent& event) {
 
 
 void ProjectFrame::createBST(wxCommandEvent& event) { }
-void ProjectFrame::BST_addRecord(wxCommandEvent& event) { }
+void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Delete Record from Binary Search Tree"), wxPoint(200,300), wxSize(450,340) );
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+        /*
+         * wxTextCtrl* ClientIDBox;
+            wxTextCtrl* FirstNameBox;
+            wxTextCtrl* SurnameBox;
+            wxTextCtrl* DestinationBox;
+            wxComboBox* MembershipCombo;
+            wxComboBox* BookingCombo;
+         */
+        cout << endl << addrecordDialog->FirstNameBox->GetValue() <<  endl;
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        cout << endl << rec.firstname << rec.id << endl << endl;
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
 void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) { 
     DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Binary Search Tree"), wxPoint(200,300), wxSize(450,250) );
     if (deleteDialog->ShowModal() == wxID_OK)
     {
         int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
-        bs_tree.remove(ID);
+        cout << endl << ID << endl;
+        //bs_tree.remove(ID);
         deleteDialog->Close();
     }
     else if (deleteDialog->ShowModal() == wxID_CANCEL) 

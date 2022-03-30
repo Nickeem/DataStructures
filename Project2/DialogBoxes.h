@@ -11,6 +11,17 @@ class InfoDialog: public wxDialog
                 InfoDialog(const wxString& title, const wxPoint& pos, const wxSize& size);                    
 };
 
+class AddRecordDialog: public wxDialog {
+    public:
+            wxTextCtrl* ClientIDBox;
+            wxTextCtrl* FirstNameBox;
+            wxTextCtrl* SurnameBox;
+            wxTextCtrl* DestinationBox;
+            wxComboBox* MembershipCombo;
+            wxComboBox* BookingCombo;
+            AddRecordDialog(const wxString& title, const wxPoint& pos, const wxSize& size);
+};
+
 class DeleteDialog: public wxDialog
 {
     public:
@@ -61,6 +72,68 @@ InfoDialog::InfoDialog ( const wxString& title, const wxPoint& pos,
     
   } // InfoDialog constructor
   
+AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos, 
+                        const wxSize& size): wxDialog((wxDialog *)NULL, -1, title, pos, size)
+{
+    //The new panel for the AddRecordDialog box
+    wxPanel    *panel = new wxPanel(this, -1);
+    // Labels and data boxes
+    wxStaticText *ClientIDLabel = new wxStaticText(panel, wxID_ANY, wxT("Client ID: "), 
+                                                     wxPoint(5, 25));
+    ClientIDBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
+                                                    wxPoint(75, 20), wxSize(220, -1) );
+    
+    wxStaticText *FirstNameLabel = new wxStaticText(panel, wxID_ANY, wxT("First Name: "), 
+                                                     wxPoint(5, 65));
+    FirstNameBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
+                                                    wxPoint(75, 60), wxSize(220, -1) );
+    
+    wxStaticText *SurnameLabel = new wxStaticText(panel, wxID_ANY, wxT("Surname:: "), 
+                                                     wxPoint(5, 105));
+    SurnameBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
+                                                    wxPoint(75, 100), wxSize(220, -1) );
+    
+    wxStaticText *DestinationLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+                                                     wxPoint(5, 145));
+    DestinationBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
+                                                    wxPoint(75, 140), wxSize(220, -1) );
+    
+    wxStaticText *MembershipLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+                                                     wxPoint(5, 185));
+    wxArrayString memberships;
+    memberships.Add(wxT("Regular"));
+    memberships.Add(wxT("Gold"));
+    memberships.Add(wxT("Platinum"));
+    memberships.Add(wxT("Silver"));
+    
+    MembershipCombo = new wxComboBox ( panel, -1, wxT("Regular"), 
+                                                    wxPoint(75, 180), wxSize(110, -1), 
+                                                    memberships, wxCB_READONLY );
+    
+    
+    wxStaticText *BookingLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+                                                     wxPoint(5, 225));
+    wxArrayString bookings;
+    bookings.Add(wxT("Vacation"));
+    bookings.Add(wxT("Walk-In"));
+    bookings.Add(wxT("Business"));
+    
+    BookingCombo = new wxComboBox ( panel, -1, wxT("Walk-In"), 
+                                                    wxPoint(75, 220), wxSize(110, -1), 
+                                                    bookings, wxCB_READONLY );
+    
+    
+    // OK Button
+    wxButton* ok = new wxButton(panel, wxID_OK, wxT("&Ok"), wxPoint(130, 250), 
+                                    wxDefaultSize, 0);
+    // The CANCEL button
+    wxButton* cancel = new wxButton ( panel, wxID_CANCEL, wxT("&Cancel"), 
+                                    wxPoint(230, 250), wxDefaultSize, 0 );
+    // Centre panel
+    Centre();
+    
+}
+  
 DeleteDialog::DeleteDialog( const wxString& title, const wxPoint& pos, 
                         const wxSize& size): wxDialog((wxDialog *)NULL, -1, title, pos, size)
 {
@@ -71,14 +144,14 @@ DeleteDialog::DeleteDialog( const wxString& title, const wxPoint& pos,
                                                      wxPoint(5, 25));
     
     ClientIDBox = new wxTextCtrl ( panel, wxID_ANY, wxT("Enter ClientID to remove"), 
-                                            wxPoint(50, 20), wxSize(220, -1) );
+                                            wxPoint(150, 20), wxSize(220, -1) );
     
     // Delete Button
     wxButton* remove = new wxButton(panel, wxID_OK, wxT("&Delete"), wxPoint(130, 180), 
                                     wxDefaultSize, 0);
 
     // The CANCEL button
-    wxButton* cancel = new wxButton ( panel, wxID_CANCEL, wxT("&CANCEL"), 
+    wxButton* cancel = new wxButton ( panel, wxID_CANCEL, wxT("&Cancel"), 
                                     wxPoint(230, 180), wxDefaultSize, 0 );
     // Centre the dialog on the parent's window
     Centre();
