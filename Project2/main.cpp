@@ -11,7 +11,7 @@ using namespace std;
 // include data Structures
 #include "BSTree.h"
 
-#include "InfoDialog.h"
+#include "DialogBoxes.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
 
@@ -25,9 +25,9 @@ class ProjectFrame: public wxFrame
 {
      private:
         DECLARE_EVENT_TABLE() //To declare events items
-        /*
-         BSTree bs_tree;
-         AVLTree avl_tree;
+        
+         BST bs_tree;
+        /* AVLTree avl_tree;
          RBTree rb_tree;
          SplayTree splay_tree;
          BTree b_tree;
@@ -684,7 +684,19 @@ void ProjectFrame::stackPop(wxCommandEvent& event) {
 
 void ProjectFrame::createBST(wxCommandEvent& event) { }
 void ProjectFrame::BST_addRecord(wxCommandEvent& event) { }
-void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) { }
+void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) { 
+    DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Binary Search Tree"), wxPoint(200,300), wxSize(450,250) );
+    if (deleteDialog->ShowModal() == wxID_OK)
+    {
+        int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
+        bs_tree.remove(ID);
+        deleteDialog->Close();
+    }
+    else if (deleteDialog->ShowModal() == wxID_CANCEL) 
+        deleteDialog->Close();
+    
+    deleteDialog->Destroy();
+}
 void ProjectFrame::BST_display_inOrder(wxCommandEvent& event) { }
 void ProjectFrame::BST_displayp_preOrder(wxCommandEvent& event) { }
 void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) { }

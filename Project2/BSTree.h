@@ -121,7 +121,7 @@ class BST
             // Mutator functions
             void purge()         { root = NULL;}
             void insert(int id, char* fname, char* sname, char* dest, char* membership, char* booking) { root = insertHelper(root, id, fname, sname, dest, membership, booking); }
-            void remove(int val) { root = deleteHelper(root, val);}
+            void remove(int id) { root = deleteHelper(root, id);}
         
             // Accessor functions
             BSTNode* getRoot() { return root;}
