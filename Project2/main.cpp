@@ -483,6 +483,8 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             while (!infile.eof())
             {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                bs_tree.insert(rec);
+                
                 output_stream << left << setw(20) << rec.id 
                 << left << setw(20) << rec.firstname 
                 << left << setw(20) << rec.surname 
@@ -491,20 +493,13 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 << left << setw(20) << rec.booking 
                 << endl; 
                 
-                /*output += to_string(rec.id);
-                output += "\t";
-                output += rec.firstname;
-                output += "\t\t";
-                output += rec.surname;
-                output += "\t\t";
-                output += rec.destination;
-                output += "\t\t";
-                output += rec.membership;
-                output += "\t\t";
-                output += rec.booking;
-                output += "\n"; */
                 output = output_stream.str();
-                MainEditBox->AppendText(output);
+                wxString mystring(output.c_str(), wxConvUTF8);
+                MainEditBox->AppendText(mystring);
+                output_stream.str("");
+                
+                // fill ADTs
+                
             }
             /*
             
@@ -720,7 +715,20 @@ void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
         strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
         strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
         strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
-        cout << endl << rec.firstname << rec.id << endl << endl;
+        
+        stringstream output_stream << left << setw(20) << rec.id 
+                << left << setw(20) << rec.firstname 
+                << left << setw(20) << rec.surname 
+                << left << setw(20) << rec.destination 
+                << left << setw(20) << rec.membership 
+                << left << setw(20) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        bs_tree.insert(rec);
         addrecordDialog->Close();
     }
     addrecordDialog->Destroy();
@@ -730,8 +738,8 @@ void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) {
     if (deleteDialog->ShowModal() == wxID_OK)
     {
         int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
-        cout << endl << ID << endl;
-        //bs_tree.remove(ID);
+        MainEditBox->SetValue(bs_tree-findNodeData());
+        bs_tree.remove(ID);
         deleteDialog->Close();
     }
     else if (deleteDialog->ShowModal() == wxID_CANCEL) 
@@ -739,9 +747,18 @@ void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) {
     
     deleteDialog->Destroy();
 }
-void ProjectFrame::BST_display_inOrder(wxCommandEvent& event) { }
-void ProjectFrame::BST_displayp_preOrder(wxCommandEvent& event) { }
-void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) { }
+void ProjectFrame::BST_display_inOrder(wxCommandEvent& event) {
+    wxString formatted_string(bs_tree.inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::BST_displayp_preOrder(wxCommandEvent& event) { 
+    wxString formatted_string(bs_tree.preOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) { 
+    wxString formatted_string(bs_tree.postOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
 //Functions for AVL Tree Menu Items 
 void ProjectFrame::createAVL(wxCommandEvent& event) { }
 void ProjectFrame::AVL_addRecord(wxCommandEvent& event) { }

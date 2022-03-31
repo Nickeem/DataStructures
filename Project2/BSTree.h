@@ -36,7 +36,17 @@ class BSTNode
                 strcpy(Destination, dest);
                 strcpy(Membership, membership);
                 strcpy(Booking, booking);
-}
+            }
+            BSTNode(Record rec) {
+                ClientID = rec.id; 
+                right = left = NULL;
+                
+                strcpy(FirstName , rec.firstname);
+                strcpy(Surname, rec.surname);
+                strcpy(Destination, rec.destination);
+                strcpy(Membership, rec.membership);
+                strcpy(Booking, rec.booking);
+            }
     
             // Accessor functions
             BSTNode* getLeft()  {return left;};
@@ -58,22 +68,25 @@ class BSTNode
 
 string BSTNode::getData() {
     string data = "";
-    data += ClientID;
-    data += "\t";
+    stringstream data_stream;
+    string left_child = "NULL";
+    string right_child = "NULL";
+    if (this->getLeft() != NULL) 
+        left_child = to_string(this->getLeft()->getID());
+    if (this->getRight() != NULL) 
+        right_child = to_string(this->getRight()->getID());
     
-    data += FirstName;
-    data += "\t";
     
-    data += Surname;
-    data += "\t";
-
-    data += Destination;
-    data += "\t";
-
-    data += Membership;
-    data += "\t";
+    data_stream << ClientID << " [" << left_child << ", " << right_child << "]"
+                << "     " 
+                << std::left << setw(20) << FirstName
+                << std::left << setw(20) << Surname 
+                << std::left << setw(20) << Destination
+                << std::left << setw(20) << Membership 
+                << std::left << setw(20) << Booking 
+                << endl; 
     
-    data += Booking;
+    data = data_stream.str();
     
     return data;
 }
@@ -99,6 +112,7 @@ class BST
     
             // Recursive counterpart for inserting a node
             BSTNode* insertHelper(BSTNode*, int, char*, char*, char*, char*, char*);
+            BSTNode* insertHelper(BSTNode*, Record);
     
             // Recursive counterpart for deleting a node
             BSTNode* deleteNode(BSTNode*, int);
@@ -121,6 +135,8 @@ class BST
             // Mutator functions
             void purge()         { root = NULL;}
             void insert(int id, char* fname, char* sname, char* dest, char* membership, char* booking) { root = insertHelper(root, id, fname, sname, dest, membership, booking); }
+            void insert(Record rec) { root = insertHelper(root, rec); }
+            string findNodeData(int id);
             void remove(int id) { root = deleteHelper(root, id);}
         
             // Accessor functions
@@ -133,7 +149,18 @@ class BST
 
 
 
-
+BSTNode* BST::findNodeData(int id) {
+    BSTNode* node = root;
+    while (node != NULL) {
+        if (node->getID() == id)
+            return node->getData();
+        if (id >= node->getID())
+            node = node->getRight();
+        else
+            node = node->getLeft();
+    }
+    return "No Node Found";
+}
 
 BSTNode* BST::insertHelper(BSTNode* ptr, int id, char* fname, char* sname, char* dest, char* membership, char* booking)
     {
@@ -151,6 +178,21 @@ BSTNode* BST::insertHelper(BSTNode* ptr, int id, char* fname, char* sname, char*
         return ptr;
     }
 
+    BSTNode* BST::insertHelper(BSTNode* ptr, Record rec)
+    {
+        if ( ptr == NULL )         // The tree is empty - new first node!
+            {
+                ptr = new BSTNode(rec);
+            }
+        else                       // choose which sub-tree to follow
+            {
+                if (rec.id >= ptr->getID())          // insert in right subtree - Operational defn.
+                    ptr->setRight(insertHelper(ptr->getRight(), rec ));
+                else                                                    // insert in left subtree
+                    ptr->setLeft(insertHelper(ptr->getLeft(), rec));
+            }
+        return ptr;
+    }
 
 
 
@@ -223,8 +265,8 @@ string BST::inOrderHelper(BSTNode* ptr)
             {
                 str.append( inOrderHelper(ptr->getLeft()) );
             
-                str.append( to_string(ptr->getID()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
+
             
                 str.append( inOrderHelper(ptr->getRight()) );
               }
@@ -240,8 +282,8 @@ string BST::preOrderHelper(BSTNode* ptr)
 		
         if ( ptr != NULL )
             {
-                str.append( to_string(ptr->getID()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
+
             
                 str.append( preOrderHelper(ptr->getLeft()) );
                 str.append( preOrderHelper(ptr->getRight()) );
@@ -261,8 +303,8 @@ string BST::postOrderHelper(BSTNode* ptr)
                 str.append( postOrderHelper(ptr->getLeft()) );
                 str.append( postOrderHelper(ptr->getRight()) );
             
-                str.append( to_string(ptr->getID()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
+
              }
 		return str;
 	}
