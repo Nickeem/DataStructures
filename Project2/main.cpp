@@ -263,9 +263,11 @@ bool MyApp::OnInit()
       // Create the main application window
       ProjectFrame *frame = new ProjectFrame( wxT("COMP2611 - Data Structures Project #1"),
                     wxPoint(50,50),
-                    wxSize(650,400) );
+                    wxSize(850,400) );
 
       // Display the window
+        
+
       frame->Show(TRUE);
 
       SetTopWindow(frame);
@@ -412,6 +414,9 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     //Initialize the display window
     MainEditBox = new wxTextCtrl(panel, wxID_ANY, wxT("No Data Available Yet..."),
                       wxPoint(-1, -1), wxSize(-1, -1), wxTE_MULTILINE | wxTE_RICH);
+    wxFont myFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL,
+            wxFONTWEIGHT_NORMAL, false);
+    MainEditBox->SetDefaultStyle(wxTextAttr(*wxBLACK, wxNullColour, myFont));
 
     //Position the labels and textboxes in the panel
     hbox1->Add(fileLabel, 0, wxRIGHT, 8);
@@ -484,12 +489,12 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
                 
-                output_stream << left << setw(20) << rec.id 
-                << left << setw(20) << rec.firstname 
-                << left << setw(20) << rec.surname 
-                << left << setw(20) << rec.destination 
-                << left << setw(20) << rec.membership 
-                << left << setw(20) << rec.booking 
+                output_stream << left << setw(15) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
                 << endl; 
                 
                 output = output_stream.str();
@@ -721,11 +726,11 @@ void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
         
         stringstream output_stream;
         output_stream << left << setw(20) << rec.id 
-                << left << setw(20) << rec.firstname 
-                << left << setw(20) << rec.surname 
-                << left << setw(20) << rec.destination 
-                << left << setw(20) << rec.membership 
-                << left << setw(20) << rec.booking 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
                 << endl; 
                 
                 string output = output_stream.str();
@@ -782,11 +787,11 @@ void ProjectFrame::AVL_addRecord(wxCommandEvent& event) {
         
         stringstream output_stream;
         output_stream << left << setw(20) << rec.id 
-                << left << setw(20) << rec.firstname 
-                << left << setw(20) << rec.surname 
-                << left << setw(20) << rec.destination 
-                << left << setw(20) << rec.membership 
-                << left << setw(20) << rec.booking 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
                 << endl; 
                 
                 string output = output_stream.str();

@@ -80,13 +80,13 @@ string AVLNode::getData() {
         right_child = to_string(this->getRight()->getID());
     
     
-    data_stream << ClientID << " [" << left_child << ", " << right_child << "]"
-                << "     " 
-                << std::left << setw(20) << FirstName
-                << std::left << setw(20) << Surname 
-                << std::left << setw(20) << Destination
-                << std::left << setw(20) << Membership 
-                << std::left << setw(20) << Booking 
+    string idData = to_string(ClientID) + "[" + left_child + ", " + right_child + "]";
+    data_stream << std::left << setw(25) << idData 
+                << std::left << setw(15) << FirstName
+                << std::left << setw(15) << Surname 
+                << std::left << setw(15) << Destination
+                << std::left << setw(15) << Membership 
+                << std::left << setw(15) << Booking 
                 << endl; 
     
     data = data_stream.str();
