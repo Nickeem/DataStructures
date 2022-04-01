@@ -43,7 +43,7 @@ class AVLNode
             }
     
             // Mutator functions
-            void setID(int ud)       {ClientID = id;}
+            void setID(int id)       {ClientID = id;}
             void setData(int id, char* fname, char * sname, char * dest, char * membership, char * booking) {
                 strcpy(FirstName , fname);
                 strcpy(Surname, sname);

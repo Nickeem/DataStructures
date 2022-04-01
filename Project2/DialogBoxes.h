@@ -93,25 +93,33 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     SurnameBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
                                                     wxPoint(75, 100), wxSize(220, -1) );
     
-    wxStaticText *DestinationLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+    wxStaticText *DestinationLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination: "), 
                                                      wxPoint(5, 145));
     DestinationBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
                                                     wxPoint(75, 140), wxSize(220, -1) );
     
-    wxStaticText *MembershipLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+    wxStaticText *MembershipLabel = new wxStaticText(panel, wxID_ANY, wxT("Membership: "), 
                                                      wxPoint(5, 185));
+    bool enableMembership = true;
+    string e_m = string(title.mb_str());
+    if (e_m.find("AVL") != std::string::npos )
+        enableMembership = false;
     wxArrayString memberships;
-    memberships.Add(wxT("Regular"));
+    
+    if (enableMembership)
+    {
+        memberships.Add(wxT("Regular"));
+        memberships.Add(wxT("Silver"));
+    }
+    
     memberships.Add(wxT("Gold"));
     memberships.Add(wxT("Platinum"));
-    memberships.Add(wxT("Silver"));
-    
-    MembershipCombo = new wxComboBox ( panel, -1, wxT("Regular"), 
+    MembershipCombo = new wxComboBox ( panel, -1, wxT("Gold"), 
                                                     wxPoint(75, 180), wxSize(110, -1), 
                                                     memberships, wxCB_READONLY );
     
     
-    wxStaticText *BookingLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination:: "), 
+    wxStaticText *BookingLabel = new wxStaticText(panel, wxID_ANY, wxT("Booking: "), 
                                                      wxPoint(5, 225));
     wxArrayString bookings;
     bookings.Add(wxT("Vacation"));

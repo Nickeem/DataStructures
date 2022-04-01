@@ -149,7 +149,7 @@ class BST
 
 
 
-BSTNode* BST::findNodeData(int id) {
+string BST::findNodeData(int id) {
     BSTNode* node = root;
     while (node != NULL) {
         if (node->getID() == id)
