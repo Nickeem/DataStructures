@@ -125,8 +125,22 @@ class AVL
             string   postOrder()     { return postOrderHelper(root); }
             string   inOrder()       { return inOrderHelper(root); }
             void     purge()         { root = NULL; }
+            string findNodeData(int id);
             
     };
+    
+string AVL::findNodeData(int id) {
+    AVLNode* node = root;
+    while (node != NULL) {
+        if (node->getID() == id)
+            return node->getData();
+        if (id >= node->getID())
+            node = node->getRight();
+        else
+            node = node->getLeft();
+    }
+    return "No Entry Found";
+}
 
 
 

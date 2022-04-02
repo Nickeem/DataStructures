@@ -9,12 +9,17 @@
 #ifndef RBTREE_H
 #define RBTREE_H
 
-
+#include <cstring>
 
 class RBTNode
     {
         private:
-            int data;
+            int ClientID;
+            char FirstName[10];
+            char Surname[10];
+            char Destination[15];
+            char Membership[10];
+            char Booking[10];
             string color;
     
         public:
@@ -24,16 +29,72 @@ class RBTNode
 
             // Constructor functions
             RBTNode(){right = left = parent= NULL; color = "RED";}
-            RBTNode(int val){data = val; right = left = parent = NULL; color = "RED";}
+            RBTNode(Record rec){
+                right = left = parent = NULL; 
+                color = "RED";
+                
+                ClientID = rec.id; 
+                
+                strcpy(FirstName , rec.firstname);
+                strcpy(Surname, rec.surname);
+                strcpy(Destination, rec.destination);
+                strcpy(Membership, rec.membership);
+                strcpy(Booking, rec.booking);
+                
+            }
     
             // Mutator functions
-            void setData(int val){data = val;}
+           void setData(int id, char* fname, char * sname, char * dest, char * membership, char * booking) {
+                strcpy(FirstName , fname);
+                strcpy(Surname, sname);
+                strcpy(Destination, dest);
+                strcpy(Membership, membership);
+                strcpy(Booking, booking);
+            }
             void setColor(string col){color = col;}
+            void setID(int id)       {ClientID = id;}
+            void setFirstName(char* fname)  {strcpy(FirstName , fname);}
+            void setSurname(char* sname)  {strcpy(Surname , sname);}
+            void setDestination(char* dest)  {strcpy(Destination , dest);}
+            void setMembership (char* membership)  {strcpy(Membership , membership);}
+            void setBooking(char* booking)  {strcpy(Booking , booking);}
 
             // Accessor functions
-            int getData(){return data;}
+            int getID()       {return ClientID;}
+            char* getFirstName() {return FirstName;}
+            char* getSurname() { return Surname;}
+            char* getDestination() {return Destination; }
+            char* getMembership() {return Membership;}
+            char* getBooking() {return Booking;}
+            string getData();
             string getColor(){return color;}
+            RBTNode* getLeft()  { return left;}
+            RBTNode* getRight() { return right;}
      };
+     
+string RBTNode::getData() {
+    string data = "";
+    stringstream data_stream;
+    string left_child = "NULL";
+    string right_child = "NULL";
+    if (this->getLeft() != NULL) 
+        left_child = to_string(this->getLeft()->getID());
+    if (this->getRight() != NULL) 
+        right_child = to_string(this->getRight()->getID());
+    
+    string idData = to_string(ClientID) + "[" + left_child + ", " + right_child + "]";
+    data_stream << std::left << setw(25) << idData 
+                << std::left << setw(15) << FirstName
+                << std::left << setw(15) << Surname 
+                << std::left << setw(15) << Destination
+                << std::left << setw(15) << Membership 
+                << std::left << setw(15) << Booking 
+                << endl; 
+    
+    data = data_stream.str();
+    
+    return data;
+}
 
 
 
@@ -60,7 +121,7 @@ class RBT
             RBT(){ root = NULL;}
     
             // Mutator functions
-            void insert(int );
+            void insert(Record);
             void remove(int);
     
             // Accessor functions
@@ -69,9 +130,21 @@ class RBT
             string preOrder();
             string postOrder();
             string showLevels();
+            string findNodeData(int id)
      };
 
-
+string RBT::findNodeData(int id) {
+    RBTNode* node = root;
+    while (node != NULL) {
+        if (node->getID() == id)
+            return node->getData();
+        if (id >= node->getID())
+            node = node->getRight();
+        else
+            node = node->getLeft();
+    }
+    return "No Entry Found";
+}
 
 
 
@@ -131,18 +204,18 @@ void RBT::rotateRight(RBTNode* ptr)
 
 
 
-RBTNode* RBT::findNode(int data)
+RBTNode* RBT::findNode(int id)
 	{
 		RBTNode* ptr = root;
 		
 		while ( ptr != NULL )
             {
-                if  (ptr->getData() == data)        // Found it!
+                if  (ptr->getID() == id)        // Found it!
                     {
                         return ptr;
                     }
             
-                if (data < ptr->getData() )
+                if (id < ptr->getID() )
                     ptr = ptr->left;
                 else 
                     ptr = ptr->right;
@@ -155,10 +228,10 @@ RBTNode* RBT::findNode(int data)
 
 
 
-void RBT::insert(int val)
+void RBT::insert(Record rec)
 	{
     
-        RBTNode* newnode = new RBTNode(val);      // Create the new node
+        RBTNode* newnode = new RBTNode(rec);      // Create the new node
         
         if (root == NULL)                   // Tree is empty - newnode is first node
             {
@@ -175,7 +248,7 @@ void RBT::insert(int val)
                     {
                         ancestor = current;
                         
-                        if ( newnode->getData() < current->getData() )
+                        if ( newnode->getID() < current->getID() )
                             current = current->left;
                         else
                             current = current->right;
@@ -183,7 +256,7 @@ void RBT::insert(int val)
             
                 newnode->parent = ancestor;
                 
-                if ( newnode->getData() < ancestor->getData() )
+                if ( newnode->getID() < ancestor->getID() )
                     ancestor->left = newnode;
                 else
                     ancestor->right= newnode;
@@ -258,9 +331,9 @@ void RBT::fixUp( RBTNode *ptr )
 
 
 
-void RBT::remove(int val)
+void RBT::remove(int id)
     {
-        RBTNode* markedNode = findNode(val);
+        RBTNode* markedNode = findNode(id);
         deleteNode(markedNode);
     }
 
@@ -298,7 +371,7 @@ void RBT::deleteNode(RBTNode* node2Zap)
                         successor->parent->right = successorChild;
                 
                 if (successor != node2Zap)
-                    node2Zap->setData(successor->getData());
+                    node2Zap->setData( successor->getID(), successor->getFirstName(), successor->getSurname(), successor->getDestination(), successor->getMembership(), successor->getBooking() );
 
                 // Finally... If color is black call fixup otherwise no fixup required
                 if (successor->getColor() == "BLACK" && successorChild != NULL)
@@ -339,8 +412,7 @@ string RBT::inOrderHelper(RBTNode* ptr)
             {
                 str.append( inOrderHelper(ptr->left) );
             
-                str.append( to_string(ptr->getData()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
             
                 str.append( inOrderHelper(ptr->right) );
               }
@@ -356,8 +428,7 @@ string RBT::preOrderHelper(RBTNode* ptr)
 		
         if ( ptr != NULL )
             {
-                str.append( to_string(ptr->getData()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
             
                 str.append( preOrderHelper(ptr->left) );
                 str.append( preOrderHelper(ptr->right) );
@@ -377,8 +448,7 @@ string RBT::postOrderHelper(RBTNode* ptr)
                 str.append( postOrderHelper(ptr->left) );
                 str.append( postOrderHelper(ptr->right) );
             
-                str.append( to_string(ptr->getData()) );
-                str.append( "  ");
+                str.append( ptr->getData() );
               }
 		return str;
 	}

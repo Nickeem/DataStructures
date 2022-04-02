@@ -60,7 +60,12 @@ class BSTNode
             string getData();
 
             // Mutator functions
-            void setData(int val)       {ClientID = val;}
+            void setID(int id)       {ClientID = id;}
+            void setFirstName(char* fname)  {strcpy(FirstName , fname);}
+            void setSurname(char* sname)  {strcpy(Surname , sname);}
+            void setDestination(char* dest)  {strcpy(Destination , dest);}
+            void setMembership (char* membership)  {strcpy(Membership , membership);}
+            void setBooking(char* booking)  {strcpy(Booking , booking);}
             void setLeft(BSTNode* ptr)  {left = ptr;}
             void setRight(BSTNode* ptr) {right = ptr;}
             void copyData(BSTNode*);
@@ -158,7 +163,7 @@ string BST::findNodeData(int id) {
         else
             node = node->getLeft();
     }
-    return "No Node Found";
+    return "No Entry Found";
 }
 
 BSTNode* BST::insertHelper(BSTNode* ptr, int id, char* fname, char* sname, char* dest, char* membership, char* booking)
