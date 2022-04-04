@@ -101,7 +101,9 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     wxStaticText *MembershipLabel = new wxStaticText(panel, wxID_ANY, wxT("Membership: "), 
                                                      wxPoint(5, 185));
     bool enableMembership = true;
-    string e_m = string(title.mb_str());
+    string e_m = string(title.mb_str()); // get title of window and put into string 
+    
+    
     if (e_m.find("AVL") != std::string::npos )
         enableMembership = false;
     wxArrayString memberships;
@@ -121,12 +123,28 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     
     wxStaticText *BookingLabel = new wxStaticText(panel, wxID_ANY, wxT("Booking: "), 
                                                      wxPoint(5, 225));
+    string default_booking = "Walk-In";
     wxArrayString bookings;
-    bookings.Add(wxT("Vacation"));
-    bookings.Add(wxT("Walk-In"));
-    bookings.Add(wxT("Business"));
     
-    BookingCombo = new wxComboBox ( panel, -1, wxT("Walk-In"), 
+    // alter booking options based on type of ADT
+    if (e_m.find("Red-Black") != std::string::npos ) {
+        bookings.Add(wxT("Vacation"));
+        default_booking = "Vacation";
+    }
+    else if (e_m.find("B-Tree") != std::string::npos ) {
+        bookings.Add(wxT("Business"));
+        default_booking = "Business";
+    }
+    else if (e_m.find("Set B") != std::string::npos ) {
+        bookings.Add(wxT("Walk-In"));
+    }
+    else {
+        bookings.Add(wxT("Vacation"));
+        bookings.Add(wxT("Walk-In"));
+        bookings.Add(wxT("Business"));
+    }
+    wxString cv_default_booking(default_booking.c_str(), wxConvUTF8); // converted string to wxString
+    BookingCombo = new wxComboBox ( panel, -1, cv_default_booking, 
                                                     wxPoint(75, 220), wxSize(110, -1), 
                                                     bookings, wxCB_READONLY );
     

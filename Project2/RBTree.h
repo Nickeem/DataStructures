@@ -130,7 +130,7 @@ class RBT
             string preOrder();
             string postOrder();
             string showLevels();
-            string findNodeData(int id)
+            string findNodeData(int id);
      };
 
 string RBT::findNodeData(int id) {

@@ -27,6 +27,8 @@ typedef struct record Record;
 // include data Structures
 #include "BSTree.h"
 #include  "AVLTree.h"
+#include "RBTree.h"
+#include  "SplayTree.h"
 #include "DialogBoxes.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
@@ -44,10 +46,11 @@ class ProjectFrame: public wxFrame
         
          BST *bs_tree;
          AVL *avl_tree;
-         RBT *rb_tree;/*
-         SplayTree splay_tree;
-         BTree b_tree;
-         Set set;
+         RBT *rb_tree;
+         SplayTree *splay_tree;/*
+         Heap *heap;
+         BTree *b_tree;
+         Set *set;
          */
         string opened_fileName;
 
@@ -516,8 +519,12 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 
                 // fill ADTs
                 bs_tree->insert(rec);
-                if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
+                /*if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
                     avl_tree->insert(rec);
+                if (strcmp(rec.booking, "Vacation") == 0 )
+                    rb_tree->insert(rec);
+                if (strcmp(rec.membership, "Silver") == 0 )
+                    splay_tree->insert(rec);*/
                 
                 
             }
@@ -719,8 +726,6 @@ void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Binary Search Tree"), wxPoint(200,300), wxSize(450,340) );
     if (addrecordDialog->ShowModal() == wxID_OK)
     {
-
-        cout << endl << addrecordDialog->FirstNameBox->GetValue() <<  endl;
         Record rec;
         // getting data from input dialog and filling record
         rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
@@ -775,6 +780,9 @@ void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) {
     MainEditBox->SetValue(formatted_string);
 }
 
+
+
+
 //Functions for AVL Tree Menu Items 
 void ProjectFrame::createAVL(wxCommandEvent& event) { }
 void ProjectFrame::AVL_addRecord(wxCommandEvent& event) {
@@ -782,7 +790,6 @@ void ProjectFrame::AVL_addRecord(wxCommandEvent& event) {
     if (addrecordDialog->ShowModal() == wxID_OK)
     {
 
-        cout << endl << addrecordDialog->FirstNameBox->GetValue() <<  endl;
         Record rec;
         rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
         strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
@@ -835,20 +842,136 @@ void ProjectFrame::AVL_display_postOrder(wxCommandEvent& event) {
     wxString formatted_string(avl_tree->postOrder().c_str(), wxConvUTF8);
     MainEditBox->SetValue(formatted_string);
 }
+
+
+
+
 //Functions for Red Black Tree Menu Items
 void ProjectFrame::createRBT(wxCommandEvent& event) { }
-void ProjectFrame::RBT_addRecord(wxCommandEvent& event) { }
-void ProjectFrame::RBT_deleteRecord(wxCommandEvent& event) { }
-void ProjectFrame::RBT_display_inOrder(wxCommandEvent& event) { }
-void ProjectFrame::RBT_displayp_preOrder(wxCommandEvent& event) { }
-void ProjectFrame::RBT_display_postOrder(wxCommandEvent& event) { }
+void ProjectFrame::RBT_addRecord(wxCommandEvent& event) {
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Red-Black Tree"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        rb_tree->insert(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
+void ProjectFrame::RBT_deleteRecord(wxCommandEvent& event) { 
+    DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Red-Black Tree"), wxPoint(200,300), wxSize(450,250) );
+    if (deleteDialog->ShowModal() == wxID_OK)
+    {
+        int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
+        MainEditBox->SetValue(rb_tree->findNodeData(ID));
+        rb_tree->remove(ID);
+        deleteDialog->Close();
+    }
+    else if (deleteDialog->ShowModal() == wxID_CANCEL) 
+        deleteDialog->Close();
+    
+    deleteDialog->Destroy();
+}
+void ProjectFrame::RBT_display_inOrder(wxCommandEvent& event) {
+    wxString formatted_string(rb_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::RBT_displayp_preOrder(wxCommandEvent& event) { 
+    wxString formatted_string(rb_tree->preOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::RBT_display_postOrder(wxCommandEvent& event) { 
+    wxString formatted_string(rb_tree->postOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+
+
+
+
 //Functions for Splay Tree Menu Items
 void ProjectFrame::createSplayT(wxCommandEvent& event) { }
-void ProjectFrame::SplayT_addRecord(wxCommandEvent& event) { }
-void ProjectFrame::SplayT_deleteRecord(wxCommandEvent& event) { }
-void ProjectFrame::SplayT_display_inOrder(wxCommandEvent& event) { }
-void ProjectFrame::SplayT_displayp_preOrder(wxCommandEvent& event) { }
-void ProjectFrame::SplayT_display_postOrder(wxCommandEvent& event) { }
+void ProjectFrame::SplayT_addRecord(wxCommandEvent& event) { 
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Splay Tree"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        splay_tree->insert(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
+void ProjectFrame::SplayT_deleteRecord(wxCommandEvent& event) { 
+    DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Splay Tree"), wxPoint(200,300), wxSize(450,250) );
+    if (deleteDialog->ShowModal() == wxID_OK)
+    {
+        int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
+        MainEditBox->SetValue(splay_tree->findNodeData(ID));
+        splay_tree->remove(ID);
+        deleteDialog->Close();
+    }
+    else if (deleteDialog->ShowModal() == wxID_CANCEL) 
+        deleteDialog->Close();
+    
+    deleteDialog->Destroy();
+}
+void ProjectFrame::SplayT_display_inOrder(wxCommandEvent& event) { 
+    wxString formatted_string(splay_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::SplayT_displayp_preOrder(wxCommandEvent& event) {
+    wxString formatted_string(splay_tree->preOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::SplayT_display_postOrder(wxCommandEvent& event) {
+    wxString formatted_string(splay_tree->preOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+
+
+
+
 //Functions for Heao Menu Items
 void ProjectFrame::createHeap(wxCommandEvent& event) { }
 void ProjectFrame::Heap_addRecord(wxCommandEvent& event) { }

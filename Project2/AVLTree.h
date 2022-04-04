@@ -51,6 +51,12 @@ class AVLNode
                 strcpy(Membership, membership);
                 strcpy(Booking, booking);
             }
+            void setFirstName(char* fname)  {strcpy(FirstName , fname);}
+            void setSurname(char* sname)  {strcpy(Surname , sname);}
+            void setDestination(char* dest)  {strcpy(Destination , dest);}
+            void setMembership (char* membership)  {strcpy(Membership , membership);}
+            void setBooking(char* booking)  {strcpy(Booking , booking);}
+            
             void setHeight(int ht)      {height = ht;}
             void setLeft(AVLNode* ptr)  {left = ptr;}
             void setRight(AVLNode* ptr) {right = ptr;}
