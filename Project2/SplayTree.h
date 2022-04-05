@@ -9,6 +9,7 @@
 #ifndef SPLAYTREE_H
 #define SPLAYTREE_H
 
+#include <cstring>
 
 class SplayNode
     {

@@ -490,6 +490,19 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             stringstream output_stream;
             string output = "";
             
+            // clear current trees in ADTs
+            delete bs_tree;
+            delete avl_tree;
+            delete rb_tree;
+            delete splay_tree;
+            
+            // create new trees
+            bs_tree = new BST();
+            avl_tree = new AVL();
+            rb_tree = new RBT();
+            splay_tree = new SplayTree();
+            
+                
             while (!infile.eof())
             {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
@@ -507,29 +520,21 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 MainEditBox->AppendText(mystring);
                 output_stream.str("");
                 
-                // clear current trees in ADTs
-                delete bs_tree;
-                delete avl_tree;
-                delete rb_tree;
                 
-                // create new trees
-                bs_tree = new BST();
-                avl_tree = new AVL();
-                rb_tree = new RBT();
                 
                 // fill ADTs
                 bs_tree->insert(rec);
-                /*if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
+                if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
                     avl_tree->insert(rec);
                 if (strcmp(rec.booking, "Vacation") == 0 )
-                    rb_tree->insert(rec);
+                    rb_tree->insert(rec);/*
                 if (strcmp(rec.membership, "Silver") == 0 )
                     splay_tree->insert(rec);*/
                 
                 
             }
-            /*
             
+            /*
             ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
             short int c = -1;
             
@@ -566,7 +571,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 } 
                 //c++;
             
-            } */
+            }*/ 
              
             // Set the Title
             SetTitle(wxString(wxT("COMP2611 – Data Structures Project #1")));
@@ -769,6 +774,7 @@ void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) {
 }
 void ProjectFrame::BST_display_inOrder(wxCommandEvent& event) {
     wxString formatted_string(bs_tree->inOrder().c_str(), wxConvUTF8);
+    cout << bs_tree->inOrder();
     MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::BST_displayp_preOrder(wxCommandEvent& event) { 

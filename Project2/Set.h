@@ -1,0 +1,105 @@
+#ifndef SET_H
+#define SET_H
+
+class SetNode {
+    private:
+        char FirstName[10];
+        char Surname[10];
+        char Destination[15];
+        char Membership[10];
+        char Booking[10];
+        
+    public:
+        Set(Record rec) {
+            ClientID = rec.id; 
+            strcpy(FirstName , rec.firstname);
+            strcpy(Surname, rec.surname);
+            strcpy(Destination, rec.destination);
+            strcpy(Membership, rec.membership);
+            strcpy(Booking, rec.booking);
+        }
+        
+         // Accessor functions
+        int getID()       {return ClientID;}
+        char* getFirstName() {return FirstName;}
+        char* getSurname() { return Surname;}
+        char* getDestination() {return Destination; }
+        char* getMembership() {return Membership;}
+        char* getBooking() {return Booking;}
+        //string getData();
+
+        // Mutator functions
+        void setID(int id)       {ClientID = id;}
+        void setFirstName(char* fname)  {strcpy(FirstName , fname);}
+        void setSurname(char* sname)  {strcpy(Surname , sname);}
+        void setDestination(char* dest)  {strcpy(Destination , dest);}
+        void setMembership (char* membership)  {strcpy(Membership , membership);}
+        void setBooking(char* booking)  {strcpy(Booking , booking);}
+}
+
+class Set {
+    private:
+        vector <SetNode> elements;
+    public:
+        Set(void) {elements.resize(0);}
+        Node* getNumElements()  const {return elements.size();}
+        SetNode* getElement (int) const;
+        bool find (SetNode* ) const;
+        void add (Record); 
+        void remove (int ); 
+        void intersect(Set*, Set*);
+
+};
+
+SetNode* Set::getElement (int index) const {
+    return &elements[index];
+}
+
+bool Set::find(int id) {
+    for (int i=0; i < elements.size(); i++) {
+        if (id == elements[i].getID()) // all values between nodes are the same
+            return true;
+    }
+    return false;
+}
+void Set::add (Record rec) {
+    if (find(rec.id)) 
+        return;
+    else
+        elements.push_back(SetNode(rec));
+
+}
+
+void Set::remove(int id) {
+    int index = 0;
+    while (elements[index].getID() != id && index < elements.size()) {
+        index++;
+    }
+    if (index == elements.size())
+        return;
+    for (int j=index; j < elements.size())  {
+        elements[j] = elements[j + 1];  
+    }
+    elements.resize(elements.size() - 1);
+        
+}
+
+void Set::intersect(Set* setA, Set* setB) {
+    elements.resize(0); // clear contents of vector
+    for(int i = 0; i < setA->getNumElements(); i++) {
+        if (setB->find(setA->getElement()->getID()))
+            elements.push_back(*(setA->getElement()));
+    }
+}
+
+void Set::union(Set* setA, Set* setB) {
+    elements.resize(0);
+    for (int i = 0; i < setA->getNumElements(); i++)
+        elements.push_back(*(setA->getElement(i)));
+    for (int i = 0; i < setB->getNumElements(); i++) {
+        if (!find(setB->getElement(i)->getID())
+            elements.push_back(*(setB->getElement(i)));
+    }
+}
+
+#endif

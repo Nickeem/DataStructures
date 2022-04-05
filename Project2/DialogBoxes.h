@@ -104,19 +104,29 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     string e_m = string(title.mb_str()); // get title of window and put into string 
     
     
-    if (e_m.find("AVL") != std::string::npos )
-        enableMembership = false;
-    wxArrayString memberships;
+    string default_membership = "Regular";
     
-    if (enableMembership)
-    {
+
+    wxArrayString memberships;
+    if (e_m.find("AVL") != std::string::npos ) {
+        memberships.Add(wxT("Gold"));
+        memberships.Add(wxT("Platinum"));
+        default_membership = "Gold";
+    }
+    else if (e_m.find("Splay") != std::string::npos) {
+        memberships.Add(wxT("Silver"));
+        default_membership = "Silver";
+    }
+    else {
+        
         memberships.Add(wxT("Regular"));
         memberships.Add(wxT("Silver"));
+        memberships.Add(wxT("Gold"));
+        memberships.Add(wxT("Platinum"));
     }
+    wxString cv_default_membership(default_membership.c_str(), wxConvUTF8); // converted string to wxString
     
-    memberships.Add(wxT("Gold"));
-    memberships.Add(wxT("Platinum"));
-    MembershipCombo = new wxComboBox ( panel, -1, wxT("Gold"), 
+    MembershipCombo = new wxComboBox ( panel, -1, cv_default_membership 
                                                     wxPoint(75, 180), wxSize(110, -1), 
                                                     memberships, wxCB_READONLY );
     
