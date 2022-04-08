@@ -11,6 +11,9 @@ class SetNode {
         char Booking[10];
         
     public:
+        SetNode() {
+            ClientID = -1;
+        }
         SetNode(Record rec) {
             ClientID = rec.id; 
             strcpy(FirstName , rec.firstname);
@@ -36,7 +39,7 @@ class SetNode {
         void setDestination(char* dest)  {strcpy(Destination , dest);}
         void setMembership (char* membership)  {strcpy(Membership , membership);}
         void setBooking(char* booking)  {strcpy(Booking , booking);}
-}
+};
 
 class Set {
     private:
@@ -50,6 +53,7 @@ class Set {
         void remove (int ); 
         void intersect(Set*, Set*);
         void Union(Set* setA, Set* setB);
+        string displaySet()
 
 };
 
@@ -102,6 +106,23 @@ void Set::Union(Set* setA, Set* setB) {
         if (!find(setB->getElement(i)->getID()))
             elements.push_back(*(setB->getElement(i)));
     }
+}
+
+string Set::displaySet() {
+    string data = "";
+    stringstream data_stream;
+    for (int i =0; i < elements.size(); i++) {
+        data_stream << std::left << setw(10) << elements[i].getID() 
+                        << std::left << setw(15) << elements[i].getSurname()
+                        << std::left << setw(15) << elements[i].getDestination()
+                        << std::left << setw(15) << elements[i].getMembership()
+                        << std::left << setw(15) << elements[i].getBooking()
+                        << endl; 
+            
+            data += data_stream.str();
+            data_stream.str("");
+    }
+    return data;
 }
 
 #endif

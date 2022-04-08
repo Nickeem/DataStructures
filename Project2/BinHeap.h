@@ -43,7 +43,7 @@ class HeapNode
             char* getDestination() {return Destination; }
             char* getMembership() {return Membership;}
             char* getBooking() {return Booking;}
-            //string getData();
+            string getData();
 
             // Mutator functions
             void setID(int id)       {ClientID = id;}
@@ -95,6 +95,9 @@ string BinHeap::nodeChildren (int index) {
     children += ", ";
     if (right < elements.size()) 
         children += to_string(elements[right].ClientID);
+    else
+        children += "NULL";
+    children += "]";
     return children;
 }
 /* void BinHeap::addMaxHeap(int val)
@@ -290,14 +293,23 @@ string BinHeap::sortMaxHeap()
     
 string BinHeap::sortMinHeap()
     {
-        string str ="";
+        string data = "";
+        stringstream data_stream;
         
         while (elements.size() > 1)
         {
-            //str.append(elements[1].getData());
+            data_stream << std::left << setw(25) << elements[1].getID()
+                        << std::left << setw(15) << elements[x].getSurname()
+                        << std::left << setw(15) << elements[x].getDestination()
+                        << std::left << setw(15) << elements[x].getMembership()
+                        << std::left << setw(15) << elements[x].getBooking()
+                        << endl; 
+            
+            data += data_stream.str();
+            data_stream.str("");
             removeMinRoot();
         }
-        return str;
+        return data;
     }
 
 
@@ -310,7 +322,7 @@ string BinHeap::displayHeap()
             
             string idData = to_string(elements[x].ClientID) + nodeChildren(x);
             data_stream << std::left << setw(25) << idData 
-                        << std::left << setw(15) << elements[x].getID()
+                      //  << std::left << setw(15) << elements[x].getID()
                         << std::left << setw(15) << elements[x].getSurname()
                         << std::left << setw(15) << elements[x].getDestination()
                         << std::left << setw(15) << elements[x].getMembership()

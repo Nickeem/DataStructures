@@ -47,8 +47,10 @@ class ProjectFrame: public wxFrame
          BST *bs_tree;
          AVL *avl_tree;
          RBT *rb_tree;
-         SplayTree *splay_tree;/*
+         SplayTree *splay_tree;
          Heap *heap;
+         /*
+         
          BTree *b_tree;
          Set *set;
          */
@@ -293,9 +295,10 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
 	// Set the frame icon - optional
  	// SetIcon(wxIcon(wxT("uwiIcon.xpm")));
     // Create ADTs
-    bs_tree = new BST();
+    /*bs_tree = new BST();
     avl_tree = new AVL();
     rb_tree = new RBT();
+    rb_tree = new RBT(); */
 
 	// Create the main-menu items
 	wxMenu *fileMenu = new wxMenu;
@@ -496,13 +499,14 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             delete avl_tree;
             delete rb_tree;
             delete splay_tree;
+            // delete heap;
             
             // create new trees
             bs_tree = new BST();
             avl_tree = new AVL();
             rb_tree = new RBT();
             splay_tree = new SplayTree();
-            
+            //heap = new BinHeap();
                 
             while (!infile.eof())
             {
@@ -636,87 +640,24 @@ void ProjectFrame::About(wxCommandEvent& event) {
     infoDialog->Destroy();
 }
 
-/*
-//=============================================================================
-//============== Definition for the Queue Functions ===========================
-//=============================================================================
-void ProjectFrame::queueDisplay(wxCommandEvent& event) {
-    MainEditBox->SetValue(queue.display());
-}
-void ProjectFrame::queueHead(wxCommandEvent& event) {
-    MainEditBox->SetValue(queue.showHead());
-}
-void ProjectFrame::queueTail(wxCommandEvent& event) {
-    MainEditBox->SetValue(queue.showTail());
-}
-void ProjectFrame::queueDequeue(wxCommandEvent& event) {
-    queue.dequeue();
-}
 
-
-
-//=============================================================================
-//============== Definition for the Priority Queue Functions ==================
-//=============================================================================
-void ProjectFrame::priorityQueueDisplay(wxCommandEvent& event) {
-    MainEditBox->SetValue(pQueue.display());
+void ProjectFrame::createBST(wxCommandEvent& event) { 
+    delete bs_tree;
+    bs_tree = new BST();
+    while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                // fill ADTs
+                bs_tree->insert(rec);
+                /*if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
+                    avl_tree->insert(rec);
+                if (strcmp(rec.booking, "Vacation") == 0 )
+                    rb_tree->insert(rec);
+                if (strcmp(rec.membership, "Silver") == 0 )
+                    splay_tree->insert(rec); */   
+            }
+    
 }
-void ProjectFrame::priorityQueueHead(wxCommandEvent& event) {
-    MainEditBox->SetValue(pQueue.showHead());
-}
-void ProjectFrame::priorityQueueTail(wxCommandEvent& event) {
-    MainEditBox->SetValue(pQueue.showTail());
-}
-void ProjectFrame::priorityDequeue(wxCommandEvent& event) {
-    pQueue.dequeue();
-}
-
-
-
-//=============================================================================
-//============== Definition for the Deque Functions ===========================
-//=============================================================================
-void ProjectFrame::dequeDisplay(wxCommandEvent& event) {
-    //MainEditBox->Clear();
-    MainEditBox->SetValue(deque.display());
-}
-void ProjectFrame::dequeHead(wxCommandEvent& event) {
-    //MainEditBox->Clear();
-    MainEditBox->SetValue(deque.showHead());
-}
-void ProjectFrame::dequeTail(wxCommandEvent& event) {
-    //MainEditBox->Clear();
-    MainEditBox->SetValue(deque.showTail());
-}
-void ProjectFrame::deque_DQ_Head(wxCommandEvent& event) {
-    //MainEditBox->Clear();
-    deque.dequeueHead();
-}
-void ProjectFrame::deque_DQ_Tail(wxCommandEvent& event) {
-    //MainEditBox->Clear();
-    deque.dequeueTail();
-}
-
-
-
-//=============================================================================
-//============== Definition for the Stack Functions ===========================
-//=============================================================================
-void ProjectFrame::stackDisplay(wxCommandEvent& event) {
-    MainEditBox->SetValue(stack.display());
-}
-void ProjectFrame::stackHead(wxCommandEvent& event) {
-    MainEditBox->SetValue(stack.showHead());
-}
-void ProjectFrame::stackTail(wxCommandEvent& event) {
-    MainEditBox->SetValue(stack.showTail());
-}
-void ProjectFrame::stackPop(wxCommandEvent& event) {
-    stack.pop();
-} */
-
-
-void ProjectFrame::createBST(wxCommandEvent& event) { }
 void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Binary Search Tree"), wxPoint(200,300), wxSize(450,340) );
     if (addrecordDialog->ShowModal() == wxID_OK)
@@ -779,7 +720,16 @@ void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) {
 
 
 //Functions for AVL Tree Menu Items 
-void ProjectFrame::createAVL(wxCommandEvent& event) { }
+void ProjectFrame::createAVL(wxCommandEvent& event) { 
+    delete avl_tree;
+    avl_tree = new AVL();
+    while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
+                    avl_tree->insert(rec);
+            }
+}
 void ProjectFrame::AVL_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to AVL Tree"), wxPoint(200,300), wxSize(450,340));
     if (addrecordDialog->ShowModal() == wxID_OK)
@@ -842,7 +792,16 @@ void ProjectFrame::AVL_display_postOrder(wxCommandEvent& event) {
 
 
 //Functions for Red Black Tree Menu Items
-void ProjectFrame::createRBT(wxCommandEvent& event) { }
+void ProjectFrame::createRBT(wxCommandEvent& event) { 
+    delete rb_tree; // delete current tree in pointer
+    rb_tree = new RBT();
+    while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                if (strcmp(rec.booking, "Vacation") == 0 )
+                    rb_tree->insert(rec); 
+            }
+}
 void ProjectFrame::RBT_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Red-Black Tree"), wxPoint(200,300), wxSize(450,340));
     if (addrecordDialog->ShowModal() == wxID_OK)
@@ -905,7 +864,16 @@ void ProjectFrame::RBT_display_postOrder(wxCommandEvent& event) {
 
 
 //Functions for Splay Tree Menu Items
-void ProjectFrame::createSplayT(wxCommandEvent& event) { }
+void ProjectFrame::createSplayT(wxCommandEvent& event) {
+    delete splay_tree;
+    splay_tree = new SplayTree();
+    while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                if (strcmp(rec.membership, "Silver") == 0 )
+                    splay_tree->insert(rec);  
+            }
+}
 void ProjectFrame::SplayT_addRecord(wxCommandEvent& event) { 
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Splay Tree"), wxPoint(200,300), wxSize(450,340));
     if (addrecordDialog->ShowModal() == wxID_OK)
@@ -960,7 +928,7 @@ void ProjectFrame::SplayT_displayp_preOrder(wxCommandEvent& event) {
     MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::SplayT_display_postOrder(wxCommandEvent& event) {
-    wxString formatted_string(splay_tree->preOrder().c_str(), wxConvUTF8);
+    wxString formatted_string(splay_tree->postOrder().c_str(), wxConvUTF8);
     MainEditBox->SetValue(formatted_string);
 }
 
@@ -968,11 +936,68 @@ void ProjectFrame::SplayT_display_postOrder(wxCommandEvent& event) {
 
 
 //Functions for Heao Menu Items
-void ProjectFrame::createHeap(wxCommandEvent& event) { }
-void ProjectFrame::Heap_addRecord(wxCommandEvent& event) { }
-void ProjectFrame::Heap_deleteRecord(wxCommandEvent& event) { }
-void ProjectFrame::Heap_displayAll(wxCommandEvent& event) { }
-void ProjectFrame::HeapSort(wxCommandEvent& event) { }
+void ProjectFrame::createHeap(wxCommandEvent& event) { 
+    delete heap;
+    heap = new BinHeap();
+    while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                heap->insert(rec); 
+            }
+}
+void ProjectFrame::Heap_addRecord(wxCommandEvent& event) { 
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Heap"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        heap->insert(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
+void ProjectFrame::Heap_deleteRecord(wxCommandEvent& event) {
+    /*DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Heap"), wxPoint(200,300), wxSize(450,250) );
+    if (deleteDialog->ShowModal() == wxID_OK)
+    {
+        int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
+        MainEditBox->SetValue(heap->findNodeData(ID));
+        splay_tree->remove(ID);
+        deleteDialog->Close();
+    }
+    else if (deleteDialog->ShowModal() == wxID_CANCEL) 
+        deleteDialog->Close();
+    
+    deleteDialog->Destroy(); */
+}
+void ProjectFrame::Heap_displayAll(wxCommandEvent& event) {
+    wxString formatted_string(heap->displayHeap().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::HeapSort(wxCommandEvent& event) { 
+    wxString formatted_string(heap->sortMinHeap().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
         
 //Functions for B Tree Menu Items
 void ProjectFrame::createBTree(wxCommandEvent& event) { }
