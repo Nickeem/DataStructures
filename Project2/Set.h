@@ -3,6 +3,7 @@
 
 class SetNode {
     private:
+        int ClientID;
         char FirstName[10];
         char Surname[10];
         char Destination[15];
@@ -10,7 +11,7 @@ class SetNode {
         char Booking[10];
         
     public:
-        Set(Record rec) {
+        SetNode(Record rec) {
             ClientID = rec.id; 
             strcpy(FirstName , rec.firstname);
             strcpy(Surname, rec.surname);
@@ -42,16 +43,17 @@ class Set {
         vector <SetNode> elements;
     public:
         Set(void) {elements.resize(0);}
-        Node* getNumElements()  const {return elements.size();}
-        SetNode* getElement (int) const;
-        bool find (SetNode* ) const;
+        int getNumElements()  const {return elements.size();}
+        SetNode* getElement (int) ;
+        bool find (int );
         void add (Record); 
         void remove (int ); 
         void intersect(Set*, Set*);
+        void Union(Set* setA, Set* setB);
 
 };
 
-SetNode* Set::getElement (int index) const {
+SetNode* Set::getElement (int index) {
     return &elements[index];
 }
 
@@ -77,7 +79,7 @@ void Set::remove(int id) {
     }
     if (index == elements.size())
         return;
-    for (int j=index; j < elements.size())  {
+    for (int j=index; j < elements.size(); j++)  {
         elements[j] = elements[j + 1];  
     }
     elements.resize(elements.size() - 1);
@@ -87,17 +89,17 @@ void Set::remove(int id) {
 void Set::intersect(Set* setA, Set* setB) {
     elements.resize(0); // clear contents of vector
     for(int i = 0; i < setA->getNumElements(); i++) {
-        if (setB->find(setA->getElement()->getID()))
-            elements.push_back(*(setA->getElement()));
+        if (setB->find(setA->getElement(i)->getID()))
+            elements.push_back(*(setA->getElement(i)));
     }
 }
 
-void Set::union(Set* setA, Set* setB) {
+void Set::Union(Set* setA, Set* setB) {
     elements.resize(0);
     for (int i = 0; i < setA->getNumElements(); i++)
         elements.push_back(*(setA->getElement(i)));
     for (int i = 0; i < setB->getNumElements(); i++) {
-        if (!find(setB->getElement(i)->getID())
+        if (!find(setB->getElement(i)->getID()))
             elements.push_back(*(setB->getElement(i)));
     }
 }

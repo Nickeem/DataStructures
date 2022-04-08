@@ -126,7 +126,7 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     }
     wxString cv_default_membership(default_membership.c_str(), wxConvUTF8); // converted string to wxString
     
-    MembershipCombo = new wxComboBox ( panel, -1, cv_default_membership 
+    MembershipCombo = new wxComboBox ( panel, -1, cv_default_membership, 
                                                     wxPoint(75, 180), wxSize(110, -1), 
                                                     memberships, wxCB_READONLY );
     

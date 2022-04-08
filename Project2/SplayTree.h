@@ -103,7 +103,7 @@ class SplayTree
                 SplayNode* RightRotate(SplayNode*);
                 SplayNode* LeftRotate(SplayNode*);
                 SplayNode* Splay(int, SplayNode*);
-                SplayNode* insertHelper(Record, SplayNode*);
+                SplayNode* insertHelper(SplayNode*, Record);
                 string InOrderHelper(SplayNode*);
                 string PreOrderHelper(SplayNode*);
                 string PostOrderHelper(SplayNode*);
@@ -120,7 +120,7 @@ class SplayTree
                 SplayTree(){ root = 0; };
     
                 SplayNode* getRoot(){return root;}
-                void insert(Record);
+                void insert(Record rec) {root = insertHelper(root, rec);};
                 string inOrder(){ return InOrderHelper(root);}
                 string preOrder(){ return PreOrderHelper(root);}
                 string postOrder(){ return PostOrderHelper(root);}
@@ -320,7 +320,7 @@ SplayNode* SplayTree::getMinimum(SplayNode *ptr)
 
 
 
-SplayNode* SplayTree::insertHelper(Record rec, SplayNode* root)
+SplayNode* SplayTree::insertHelper(SplayNode* root, Record rec)
     {
         SplayNode* newnode = new SplayNode(rec);
     
@@ -349,14 +349,6 @@ SplayNode* SplayTree::insertHelper(Record rec, SplayNode* root)
         return (root);
     }
 
-
-
-
-void SplayTree::insert(Record rec)
-{
-    root = insertHelper(rec, root);
-
-}
 
 
 

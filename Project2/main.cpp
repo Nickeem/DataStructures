@@ -478,11 +478,12 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
 
             //Clean up filename textbox and Display file name in filename textbox
             filenameTextBox->Clear();
-            //filenameTextBox->AppendText(CurrentFilePath);
+            filenameTextBox->AppendText(CurrentFilePath);
             
             MainEditBox->Clear();
             //MainEditBox->LoadFile(CurrentFilePath);   //Opens that file in the MainEditBox
-            opened_fileName = CurrentFilePath.mb_str();
+            opened_fileName = CurrentFilePath.mb_str(); // store file path / name of opened file
+            
             
             fstream infile(opened_fileName, ios::in|ios::binary);
             Record rec;
@@ -527,51 +528,13 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
                     avl_tree->insert(rec);
                 if (strcmp(rec.booking, "Vacation") == 0 )
-                    rb_tree->insert(rec);/*
+                    rb_tree->insert(rec);
                 if (strcmp(rec.membership, "Silver") == 0 )
-                    splay_tree->insert(rec);*/
+                    splay_tree->insert(rec);
                 
                 
             }
             
-            /*
-            ifstream infile ( CurrentFilePath.mb_str() ); // for filling objects
-            short int c = -1;
-            
-            string info;
-
-            
-            while (getline(infile, info)) {
-                if (c == -1 ) {
-                    c++;  
-                    header = info;
-                    continue;
-                }
-                if(info.find_first_not_of(' ') == std::string::npos)
-                    continue; // if string is only whitespaces skip
-
-                //fileData.push_back(info);
-
-                queue.enqueue(new Node(info));
-                
-                // if substrings are in info/lines fill ADT
-                if (info.find("Platinum") != std::string::npos || info.find("Gold") != std::string::npos) {
-                    int position = info.find(",");
-                    int id = stoi(info.substr(0,position-1)); // substring id in file and parse to int
-                    pQueue.enqueue(new Node(info, id));
-                }
-                if (info.find("Vacation") != std::string::npos) {
-                    deque.enqueueHead(new Node(info));
-                }
-                if (info.find("Business") != std::string::npos) {
-                    deque.enqueueTail(new Node(info));
-                }
-                if (info.find("Walk-in") != std::string::npos) {
-                    stack.push(new Node(info));
-                } 
-                //c++;
-            
-            }*/ 
              
             // Set the Title
             SetTitle(wxString(wxT("COMP2611 – Data Structures Project #1")));
@@ -623,8 +586,35 @@ void ProjectFrame::OnDisplay(wxCommandEvent& event )
                 wxFD_OPEN, wxDefaultPosition);
 
         MainEditBox->Clear();
-
-        MainEditBox->LoadFile(CurrentFilePath);
+        
+        opened_fileName = CurrentFilePath.mb_str(); // store file path / name of opened file
+            
+            
+            fstream infile(opened_fileName, ios::in|ios::binary);
+            Record rec;
+            infile.seekg(0);
+            stringstream output_stream;
+            string output = "";
+            
+                
+            while (!infile.eof())
+            {
+                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+                
+                output_stream << left << setw(15) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                output = output_stream.str();
+                wxString mystring(output.c_str(), wxConvUTF8);
+                MainEditBox->AppendText(mystring);
+                output_stream.str("");
+            }
+        //MainEditBox->LoadFile(CurrentFilePath);
     }
 
 
@@ -774,7 +764,6 @@ void ProjectFrame::BST_deleteRecord(wxCommandEvent& event) {
 }
 void ProjectFrame::BST_display_inOrder(wxCommandEvent& event) {
     wxString formatted_string(bs_tree->inOrder().c_str(), wxConvUTF8);
-    cout << bs_tree->inOrder();
     MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::BST_displayp_preOrder(wxCommandEvent& event) { 
