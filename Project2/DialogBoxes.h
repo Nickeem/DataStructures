@@ -184,7 +184,7 @@ DeleteDialog::DeleteDialog( const wxString& title, const wxPoint& pos,
                                                      wxPoint(5, 25));
     
     ClientIDBox = new wxTextCtrl ( panel, wxID_ANY, wxT("Enter ClientID to remove"), 
-                                            wxPoint(150, 20), wxSize(220, -1) );
+                                            wxPoint(200, 20), wxSize(190, -1) );
     
     // Delete Button
     wxButton* remove = new wxButton(panel, wxID_OK, wxT("&Delete"), wxPoint(130, 180), 

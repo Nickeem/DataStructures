@@ -299,10 +299,15 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
 	// Set the frame icon - optional
  	// SetIcon(wxIcon(wxT("uwiIcon.xpm")));
     // Create ADTs
-    /*bs_tree = new BST();
+    // create new trees
+    bs_tree = new BST();
     avl_tree = new AVL();
     rb_tree = new RBT();
-    rb_tree = new RBT(); */
+    splay_tree = new SplayTree();
+    heap = new BinHeap();
+    setA = new Set();
+    setB = new Set();
+    heap = new BinHeap();
 
 	// Create the main-menu items
 	wxMenu *fileMenu = new wxMenu;
@@ -505,6 +510,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             delete splay_tree;
             delete setA;
             delete setB;
+            delete heap;
             // delete heap;
             
             // create new trees
@@ -512,6 +518,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             avl_tree = new AVL();
             rb_tree = new RBT();
             splay_tree = new SplayTree();
+            heap = new BinHeap();
             setA = new Set();
             setB = new Set();
             heap = new BinHeap();
@@ -661,8 +668,6 @@ void ProjectFrame::createBST(wxCommandEvent& event) {
     fstream infile(opened_fileName, ios::in|ios::binary);
     Record rec;
     infile.seekg(0);
-    stringstream output_stream;
-    string output = "";
     delete bs_tree;
     bs_tree = new BST();
     while (!infile.eof())
@@ -670,14 +675,9 @@ void ProjectFrame::createBST(wxCommandEvent& event) {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
                 // fill ADTs
                 bs_tree->insert(rec);
-                /*if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
-                    avl_tree->insert(rec);
-                if (strcmp(rec.booking, "Vacation") == 0 )
-                    rb_tree->insert(rec);
-                if (strcmp(rec.membership, "Silver") == 0 )
-                    splay_tree->insert(rec); */   
             }
-    
+    wxString formatted_string(bs_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::BST_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Binary Search Tree"), wxPoint(200,300), wxSize(450,340) );
@@ -745,8 +745,6 @@ void ProjectFrame::createAVL(wxCommandEvent& event) {
     fstream infile(opened_fileName, ios::in|ios::binary);
     Record rec;
     infile.seekg(0);
-    stringstream output_stream;
-    string output = "";
     delete avl_tree;
     avl_tree = new AVL();
     while (!infile.eof())
@@ -755,6 +753,8 @@ void ProjectFrame::createAVL(wxCommandEvent& event) {
                 if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
                     avl_tree->insert(rec);
             }
+            wxString formatted_string(avl_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::AVL_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to AVL Tree"), wxPoint(200,300), wxSize(450,340));
@@ -822,16 +822,17 @@ void ProjectFrame::createRBT(wxCommandEvent& event) {
     fstream infile(opened_fileName, ios::in|ios::binary);
     Record rec;
     infile.seekg(0);
-    stringstream output_stream;
-    string output = "";
     delete rb_tree; // delete current tree in pointer
     rb_tree = new RBT();
     while (!infile.eof())
-            {
-                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
-                if (strcmp(rec.booking, "Vacation") == 0 )
-                    rb_tree->insert(rec); 
-            }
+        {
+            infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+            if (strcmp(rec.booking, "Vacation") == 0 )
+                rb_tree->insert(rec); 
+        }
+    wxString formatted_string(rb_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+            
 }
 void ProjectFrame::RBT_addRecord(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Red-Black Tree"), wxPoint(200,300), wxSize(450,340));
@@ -899,17 +900,17 @@ void ProjectFrame::createSplayT(wxCommandEvent& event) {
     fstream infile(opened_fileName, ios::in|ios::binary);
     Record rec;
     infile.seekg(0);
-    stringstream output_stream;
-    string output = "";
             
     delete splay_tree;
     splay_tree = new SplayTree();
     while (!infile.eof())
-            {
-                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
-                if (strcmp(rec.membership, "Silver") == 0 )
-                    splay_tree->insert(rec);  
-            }
+        {
+            infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+            if (strcmp(rec.membership, "Silver") == 0 )
+                splay_tree->insert(rec);  
+        }
+    wxString formatted_string(splay_tree->inOrder().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::SplayT_addRecord(wxCommandEvent& event) { 
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Splay Tree"), wxPoint(200,300), wxSize(450,340));
@@ -977,15 +978,15 @@ void ProjectFrame::createHeap(wxCommandEvent& event) {
     fstream infile(opened_fileName, ios::in|ios::binary);
     Record rec;
     infile.seekg(0);
-    stringstream output_stream;
-    string output = "";
     delete heap;
     heap = new BinHeap();
     while (!infile.eof())
-            {
-                infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
-                heap->addMinHeap(rec); 
-            }
+        {
+            infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+            heap->addMinHeap(rec); 
+        }
+    wxString formatted_string(heap->displayHeap().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
 }
 void ProjectFrame::Heap_addRecord(wxCommandEvent& event) { 
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Heap"), wxPoint(200,300), wxSize(450,340));
@@ -1019,18 +1020,18 @@ void ProjectFrame::Heap_addRecord(wxCommandEvent& event) {
     addrecordDialog->Destroy();
 }
 void ProjectFrame::Heap_deleteRecord(wxCommandEvent& event) {
-    /*DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Heap"), wxPoint(200,300), wxSize(450,250) );
+    DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Heap"), wxPoint(200,300), wxSize(450,250) );
     if (deleteDialog->ShowModal() == wxID_OK)
     {
         int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
         MainEditBox->SetValue(heap->findNodeData(ID));
-        splay_tree->remove(ID);
+        heap->deleteMinHeapVal(ID);
         deleteDialog->Close();
     }
     else if (deleteDialog->ShowModal() == wxID_CANCEL) 
         deleteDialog->Close();
     
-    deleteDialog->Destroy(); */
+    deleteDialog->Destroy(); 
 }
 void ProjectFrame::Heap_displayAll(wxCommandEvent& event) {
     wxString formatted_string(heap->displayHeap().c_str(), wxConvUTF8);
@@ -1048,7 +1049,24 @@ void ProjectFrame::BTree_deleteRecord(wxCommandEvent& event) { }
 void ProjectFrame::BTree_displayAll(wxCommandEvent& event) { }
         
 //Functions for Set
-void ProjectFrame::createSets(wxCommandEvent& event) { }
+void ProjectFrame::createSets(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+            
+    delete setA;
+    delete setB;
+    setA = new Set();
+    setB = new Set();
+    while (!infile.eof())
+        {
+            infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+            if (strcmp(rec.membership, "Regular") == 0 )
+                    setA->add(rec);
+            if (strcmp(rec.booking, "Walk-in") == 0 )
+                setB->add(rec);
+        }
+}
 void ProjectFrame::AddtoSetA(wxCommandEvent& event) {
     AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Set A"), wxPoint(200,300), wxSize(450,340));
     if (addrecordDialog->ShowModal() == wxID_OK)

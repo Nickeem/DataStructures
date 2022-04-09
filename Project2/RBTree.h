@@ -89,6 +89,7 @@ string RBTNode::getData() {
                 << std::left << setw(15) << Destination
                 << std::left << setw(15) << Membership 
                 << std::left << setw(15) << Booking 
+                << "(" << color << ")"
                 << endl; 
     
     data = data_stream.str();

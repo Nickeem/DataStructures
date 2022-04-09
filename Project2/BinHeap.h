@@ -76,12 +76,33 @@ class BinHeap
                 string sortMaxHeap();
                 string sortMinHeap();
                 string nodeChildren(int);
+                string findNodeData(int);
     };
 
 
 //===================================================================================
 // Add new element to MaxHeap
 //===================================================================================
+    
+string BinHeap::findNodeData(int ID) {
+    string data = "No Node was Found";
+    for (int i = 1; i < elements.size(); i ++) {
+        if (elements[i].getID() == ID) {
+            string idData = to_string(elements[i].ClientID) + nodeChildren(i);
+            stringstream data_stream;
+            data_stream << std::left << setw(25) << idData 
+                        //  << std::left << setw(15) << elements[x].getID()
+                        << std::left << setw(15) << elements[i].getSurname()
+                        << std::left << setw(15) << elements[i].getDestination()
+                        << std::left << setw(15) << elements[i].getMembership()
+                        << std::left << setw(15) << elements[i].getBooking()
+                        << endl; 
+            
+            data = data_stream.str();
+        }
+    }
+    return data;
+}
 
 string BinHeap::nodeChildren (int index) {
     string children = "["; // hold child data in format [left, right]
