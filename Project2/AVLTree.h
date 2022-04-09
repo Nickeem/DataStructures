@@ -92,8 +92,8 @@ string AVLNode::getData() {
                 << std::left << setw(15) << Surname 
                 << std::left << setw(15) << Destination
                 << std::left << setw(15) << Membership 
-                << std::left << setw(15) << Booking 
-                << endl; 
+                << std::left << setw(15) << Booking;
+                //<< endl; 
     
     data = data_stream.str();
     
@@ -402,6 +402,16 @@ string AVL::inOrderHelper(AVLNode* ptr)
                 str.append( inOrderHelper(ptr->getLeft()) );
             
                  str.append( ptr->getData() );
+                 string status; // check state of node heavy side or balanced
+                 int balance = calcBalance(ptr);
+                 if (balance < 0)
+                     status = "(left-heavy)";
+                 if (balance > 0)
+                     status = "(right-heavy)";
+                 else
+                     status = "(balanced)";
+                 str.append(status);
+                 str.append ("\n");
             
                 str.append( inOrderHelper(ptr->getRight()) );
               }
@@ -418,6 +428,16 @@ string AVL::preOrderHelper(AVLNode* ptr)
         if ( ptr != NULL )
             {
                 str.append( ptr->getData() );
+                string status; // check state of node heavy side or balanced
+                 int balance = calcBalance(ptr);
+                 if (balance < 0)
+                     status = "(left-heavy)";
+                 if (balance > 0)
+                     status = "(right-heavy)";
+                 else
+                     status = "(balanced)";
+                 str.append(status);
+                 str.append ("\n");
 
             
                 str.append( preOrderHelper(ptr->getLeft()) );
@@ -439,6 +459,16 @@ string AVL::postOrderHelper(AVLNode* ptr)
                 str.append( inOrderHelper(ptr->getRight()) );
             
                  str.append( ptr->getData() );
+                 string status; // check state of node heavy side or balanced
+                 int balance = calcBalance(ptr);
+                 if (balance < 0)
+                     status = "(left-heavy)";
+                 if (balance > 0)
+                     status = "(right-heavy)";
+                 else
+                     status = "(balanced)";
+                 str.append(status);
+                 str.append ("\n");
              }
 		return str;
 	}

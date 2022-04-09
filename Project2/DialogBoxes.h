@@ -96,7 +96,7 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     wxStaticText *DestinationLabel = new wxStaticText(panel, wxID_ANY, wxT("Destination: "), 
                                                      wxPoint(5, 145));
     DestinationBox = new wxTextCtrl ( panel, wxID_ANY, wxT(""), 
-                                                    wxPoint(75, 140), wxSize(220, -1) );
+                                                    wxPoint(85, 140), wxSize(220, -1) );
     
     wxStaticText *MembershipLabel = new wxStaticText(panel, wxID_ANY, wxT("Membership: "), 
                                                      wxPoint(5, 185));
@@ -117,6 +117,10 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
         memberships.Add(wxT("Silver"));
         default_membership = "Silver";
     }
+    else if (e_m.find("Set A") != std::string::npos) {
+        memberships.Add(wxT("Regular"));
+        default_membership = "Regular";
+    }
     else {
         
         memberships.Add(wxT("Regular"));
@@ -127,7 +131,7 @@ AddRecordDialog::AddRecordDialog( const wxString& title, const wxPoint& pos,
     wxString cv_default_membership(default_membership.c_str(), wxConvUTF8); // converted string to wxString
     
     MembershipCombo = new wxComboBox ( panel, -1, cv_default_membership, 
-                                                    wxPoint(75, 180), wxSize(110, -1), 
+                                                    wxPoint(85, 180), wxSize(110, -1), 
                                                     memberships, wxCB_READONLY );
     
     

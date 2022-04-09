@@ -299,10 +299,10 @@ string BinHeap::sortMinHeap()
         while (elements.size() > 1)
         {
             data_stream << std::left << setw(25) << elements[1].getID()
-                        << std::left << setw(15) << elements[x].getSurname()
-                        << std::left << setw(15) << elements[x].getDestination()
-                        << std::left << setw(15) << elements[x].getMembership()
-                        << std::left << setw(15) << elements[x].getBooking()
+                        << std::left << setw(15) << elements[1].getSurname()
+                        << std::left << setw(15) << elements[1].getDestination()
+                        << std::left << setw(15) << elements[1].getMembership()
+                        << std::left << setw(15) << elements[1].getBooking()
                         << endl; 
             
             data += data_stream.str();

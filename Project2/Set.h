@@ -53,7 +53,7 @@ class Set {
         void remove (int ); 
         void intersect(Set*, Set*);
         void Union(Set* setA, Set* setB);
-        string displaySet()
+        string displaySet();
 
 };
 
@@ -103,7 +103,7 @@ void Set::Union(Set* setA, Set* setB) {
     for (int i = 0; i < setA->getNumElements(); i++)
         elements.push_back(*(setA->getElement(i)));
     for (int i = 0; i < setB->getNumElements(); i++) {
-        if (!find(setB->getElement(i)->getID()))
+        if (!setA->find(setB->getElement(i)->getID()))
             elements.push_back(*(setB->getElement(i)));
     }
 }

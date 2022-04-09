@@ -29,6 +29,8 @@ typedef struct record Record;
 #include  "AVLTree.h"
 #include "RBTree.h"
 #include  "SplayTree.h"
+#include  "BinHeap.h"
+#include  "Set.h"
 #include "DialogBoxes.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
 
@@ -48,11 +50,13 @@ class ProjectFrame: public wxFrame
          AVL *avl_tree;
          RBT *rb_tree;
          SplayTree *splay_tree;
-         Heap *heap;
+         BinHeap *heap;
+         Set *setA;
+         Set *setB;
          /*
          
          BTree *b_tree;
-         Set *set;
+         
          */
         string opened_fileName;
 
@@ -268,7 +272,7 @@ bool MyApp::OnInit()
       // Create the main application window
       ProjectFrame *frame = new ProjectFrame( wxT("COMP2611 - Data Structures Project #1"),
                     wxPoint(50,50),
-                    wxSize(850,400) );
+                    wxSize(950,400) );
 
       // Display the window
         
@@ -472,7 +476,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
         // Creates a "open file" dialog with 3 file types
         wxFileDialog *OpenDialog = new wxFileDialog( this,
              (wxT("Choose a file to open")), wxEmptyString, wxEmptyString,
-             (wxT("Data Files (*.dat)|*.dat|All files (*.*)|*.*")), wxFD_OPEN, wxDefaultPosition);
+             (wxT("Data Files (*.dat)|*.dat| Text(*.txt)|*.txt |All files (*.*)|*.*")), wxFD_OPEN, wxDefaultPosition);
 
         if (OpenDialog->ShowModal() == wxID_OK)    // if the user click "Open" instead of "cancel"
         {
@@ -499,6 +503,8 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             delete avl_tree;
             delete rb_tree;
             delete splay_tree;
+            delete setA;
+            delete setB;
             // delete heap;
             
             // create new trees
@@ -506,7 +512,9 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             avl_tree = new AVL();
             rb_tree = new RBT();
             splay_tree = new SplayTree();
-            //heap = new BinHeap();
+            setA = new Set();
+            setB = new Set();
+            heap = new BinHeap();
                 
             while (!infile.eof())
             {
@@ -529,14 +537,18 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 
                 // fill ADTs
                 bs_tree->insert(rec);
+                heap->addMinHeap(rec);
                 if (strcmp(rec.membership, "Platinum") == 0 || strcmp(rec.membership, "Gold") == 0)
                     avl_tree->insert(rec);
                 if (strcmp(rec.booking, "Vacation") == 0 )
                     rb_tree->insert(rec);
                 if (strcmp(rec.membership, "Silver") == 0 )
                     splay_tree->insert(rec);
-                
-                
+                if (strcmp(rec.membership, "Regular") == 0 )
+                    setA->add(rec);
+                if (strcmp(rec.booking, "Walk-in") == 0 )
+                    setB->add(rec);
+                    
             }
             
              
@@ -583,6 +595,7 @@ void ProjectFrame::OnSaveAs(wxCommandEvent& event)
 
 void ProjectFrame::OnDisplay(wxCommandEvent& event )
     {
+        
         // Creates a "open file" dialog with 4 file types
         wxFileDialog *OpenDialog = new wxFileDialog( this, (wxT("Choose a file to open")),
                 wxEmptyString, wxEmptyString,
@@ -590,7 +603,10 @@ void ProjectFrame::OnDisplay(wxCommandEvent& event )
                 wxFD_OPEN, wxDefaultPosition);
 
         MainEditBox->Clear();
-        
+        if (string(CurrentFilePath.mb_str()) == "") {
+            MainEditBox->SetValue("No File Previously Selected");
+            return;
+        }
         opened_fileName = CurrentFilePath.mb_str(); // store file path / name of opened file
             
             
@@ -642,6 +658,11 @@ void ProjectFrame::About(wxCommandEvent& event) {
 
 
 void ProjectFrame::createBST(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    stringstream output_stream;
+    string output = "";
     delete bs_tree;
     bs_tree = new BST();
     while (!infile.eof())
@@ -721,6 +742,11 @@ void ProjectFrame::BST_display_postOrder(wxCommandEvent& event) {
 
 //Functions for AVL Tree Menu Items 
 void ProjectFrame::createAVL(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    stringstream output_stream;
+    string output = "";
     delete avl_tree;
     avl_tree = new AVL();
     while (!infile.eof())
@@ -793,6 +819,11 @@ void ProjectFrame::AVL_display_postOrder(wxCommandEvent& event) {
 
 //Functions for Red Black Tree Menu Items
 void ProjectFrame::createRBT(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    stringstream output_stream;
+    string output = "";
     delete rb_tree; // delete current tree in pointer
     rb_tree = new RBT();
     while (!infile.eof())
@@ -865,6 +896,12 @@ void ProjectFrame::RBT_display_postOrder(wxCommandEvent& event) {
 
 //Functions for Splay Tree Menu Items
 void ProjectFrame::createSplayT(wxCommandEvent& event) {
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    stringstream output_stream;
+    string output = "";
+            
     delete splay_tree;
     splay_tree = new SplayTree();
     while (!infile.eof())
@@ -937,12 +974,17 @@ void ProjectFrame::SplayT_display_postOrder(wxCommandEvent& event) {
 
 //Functions for Heao Menu Items
 void ProjectFrame::createHeap(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    stringstream output_stream;
+    string output = "";
     delete heap;
     heap = new BinHeap();
     while (!infile.eof())
             {
                 infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
-                heap->insert(rec); 
+                heap->addMinHeap(rec); 
             }
 }
 void ProjectFrame::Heap_addRecord(wxCommandEvent& event) { 
@@ -971,7 +1013,7 @@ void ProjectFrame::Heap_addRecord(wxCommandEvent& event) {
                 wxString formatted_string(output.c_str(), wxConvUTF8);
                 MainEditBox->SetValue(formatted_string);
         
-        heap->insert(rec);
+        heap->addMinHeap(rec);
         addrecordDialog->Close();
     }
     addrecordDialog->Destroy();
@@ -1007,9 +1049,85 @@ void ProjectFrame::BTree_displayAll(wxCommandEvent& event) { }
         
 //Functions for Set
 void ProjectFrame::createSets(wxCommandEvent& event) { }
-void ProjectFrame::AddtoSetA(wxCommandEvent& event) { }
-void ProjectFrame::AddtoSetB(wxCommandEvent& event) { }
-void ProjectFrame::displaySetA(wxCommandEvent& event) { }
-void ProjectFrame::displaySetB(wxCommandEvent& event) { }
-void ProjectFrame::displayIntersection(wxCommandEvent& event) { }
-void ProjectFrame::displayUnion(wxCommandEvent& event) { }
+void ProjectFrame::AddtoSetA(wxCommandEvent& event) {
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Set A"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        setA->add(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
+void ProjectFrame::AddtoSetB(wxCommandEvent& event) { 
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to Set B"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        setB->add(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy();
+}
+void ProjectFrame::displaySetA(wxCommandEvent& event) { 
+    wxString formatted_string(setA->displaySet().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::displaySetB(wxCommandEvent& event) { 
+    wxString formatted_string(setB->displaySet().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::displayIntersection(wxCommandEvent& event) { 
+    Set temp_set;
+    temp_set.intersect(setA, setB);
+    wxString formatted_string(temp_set.displaySet().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
+void ProjectFrame::displayUnion(wxCommandEvent& event) { 
+    Set temp_set;
+    temp_set.Union(setA, setB);
+    wxString formatted_string(temp_set.displaySet().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
