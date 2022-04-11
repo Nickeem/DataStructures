@@ -30,6 +30,7 @@ typedef struct record Record;
 #include "RBTree.h"
 #include  "SplayTree.h"
 #include  "BinHeap.h"
+#include  "BTree.h"
 #include  "Set.h"
 #include "DialogBoxes.h"
 // g++ main.cpp -o runlol `wx-config --libs --cxxflags`
@@ -53,11 +54,11 @@ class ProjectFrame: public wxFrame
          BinHeap *heap;
          Set *setA;
          Set *setB;
-         /*
+         
          
          BTree *b_tree;
          
-         */
+         
         string opened_fileName;
 
      public:
@@ -180,10 +181,10 @@ enum
     ID_Heap_Display,
     ID_Heap_Sort,
 	// B Tree submenu items
-    ID_BT_Create,
-    ID_BT_Add,
-    ID_BT_Delete,
-    ID_BT_Display,
+    ID_BTree_Create,
+    ID_BTree_Add,
+    ID_BTree_Delete,
+    ID_BTree_Display,
     // Set submenu items
     ID_Set_Create,
     ID_Set_AddA,
@@ -249,10 +250,10 @@ BEGIN_EVENT_TABLE ( ProjectFrame, wxFrame )
     EVT_MENU( ID_Heap_Sort, ProjectFrame::HeapSort)
     
     // Events for the "B Tree" menu items
-    EVT_MENU( ID_BT_Create, ProjectFrame::createBTree)
-    EVT_MENU( ID_BT_Add, ProjectFrame::BTree_addRecord)
-    EVT_MENU( ID_BT_Delete, ProjectFrame::BTree_deleteRecord)
-    EVT_MENU( ID_BT_Display, ProjectFrame::BTree_displayAll)
+    EVT_MENU( ID_BTree_Create, ProjectFrame::createBTree)
+    EVT_MENU( ID_BTree_Add, ProjectFrame::BTree_addRecord)
+    EVT_MENU( ID_BTree_Delete, ProjectFrame::BTree_deleteRecord)
+    EVT_MENU( ID_BTree_Display, ProjectFrame::BTree_displayAll)
     
     // Events for the "Set" menu items
     EVT_MENU( ID_Set_Create, ProjectFrame::createSets)
@@ -308,6 +309,7 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     setA = new Set();
     setB = new Set();
     heap = new BinHeap();
+    b_tree = new BTree();
 
 	// Create the main-menu items
 	wxMenu *fileMenu = new wxMenu;
@@ -375,10 +377,10 @@ ProjectFrame::ProjectFrame ( const wxString& title, const wxPoint& pos, const wx
     heapMenu->Append( ID_Heap_Display, wxT("Display All"), wxT("Display ALL the inorder in the MinHeap tree"));
     heapMenu->Append( ID_Heap_Sort, wxT("Heap Sort"), wxT("Display the results of the Heap Sort of the MinHeap tree"));
     
-    btMenu->Append( ID_BT_Create, wxT("Create B-Tree"), wxT("Create the B-Tree from the RAF"));
-    btMenu->Append( ID_BT_Create, wxT("Add a Record"), wxT("Manually add a record to the B-Tree"));
-    btMenu->Append( ID_BT_Create, wxT("Delete a Record"), wxT("Delete a specified record from the B-Tree"));
-    btMenu->Append( ID_BT_Create, wxT("Display ALL"), wxT("Display ALL the records in the B-Tree"));
+    btMenu->Append( ID_BTree_Create, wxT("Create B-Tree"), wxT("Create the B-Tree from the RAF"));
+    btMenu->Append( ID_BTree_Add, wxT("Add a Record"), wxT("Manually add a record to the B-Tree"));
+    btMenu->Append( ID_BTree_Delete, wxT("Delete a Record"), wxT("Delete a specified record from the B-Tree"));
+    btMenu->Append( ID_BTree_Display, wxT("Display ALL"), wxT("Display ALL the records in the B-Tree"));
     
      setsMenu->Append( ID_Set_Create, wxT("Create Sets"), wxT("Create SetA and Set B from the RAF"));
      setsMenu->Append( ID_Set_AddA, wxT("Add Data to SetA"), wxT("Manually add a record to Set A"));
@@ -511,6 +513,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             delete setA;
             delete setB;
             delete heap;
+            delete b_tree;
             // delete heap;
             
             // create new trees
@@ -522,6 +525,7 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
             setA = new Set();
             setB = new Set();
             heap = new BinHeap();
+            b_tree = new BTree();
                 
             while (!infile.eof())
             {
@@ -554,7 +558,10 @@ void ProjectFrame::OnOpenFile(wxCommandEvent& event )
                 if (strcmp(rec.membership, "Regular") == 0 )
                     setA->add(rec);
                 if (strcmp(rec.booking, "Walk-in") == 0 )
-                    setB->add(rec);
+                    setB->add(rec);                    
+                if (strcmp(rec.booking, "Business") == 0 )
+                    b_tree->insert(rec); 
+                // << rec.destination << endl;
                     
             }
             
@@ -1043,10 +1050,71 @@ void ProjectFrame::HeapSort(wxCommandEvent& event) {
 }
         
 //Functions for B Tree Menu Items
-void ProjectFrame::createBTree(wxCommandEvent& event) { }
-void ProjectFrame::BTree_addRecord(wxCommandEvent& event) { }
-void ProjectFrame::BTree_deleteRecord(wxCommandEvent& event) { }
-void ProjectFrame::BTree_displayAll(wxCommandEvent& event) { }
+void ProjectFrame::createBTree(wxCommandEvent& event) { 
+    fstream infile(opened_fileName, ios::in|ios::binary);
+    Record rec;
+    infile.seekg(0);
+    delete b_tree;
+    b_tree = new BTree();
+    while (!infile.eof())
+        {
+            infile.read (reinterpret_cast<char*>(&rec), sizeof(Record));
+            if (strcmp(rec.booking, "Business") == 0 )
+                b_tree->insert(rec); 
+        }
+    wxString formatted_string(b_tree->displayBTree().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string); 
+}
+void ProjectFrame::BTree_addRecord(wxCommandEvent& event) { 
+    AddRecordDialog *addrecordDialog = new AddRecordDialog( wxT("Add Record to B-Tree"), wxPoint(200,300), wxSize(450,340));
+    if (addrecordDialog->ShowModal() == wxID_OK)
+    {
+
+        Record rec;
+        rec.id = wxAtoi(addrecordDialog->ClientIDBox->GetValue());
+        strcpy(rec.firstname, string(addrecordDialog->FirstNameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.surname, string(addrecordDialog->SurnameBox->GetValue().mb_str()).c_str());
+        strcpy(rec.destination, string(addrecordDialog->DestinationBox->GetValue().mb_str()).c_str());
+        strcpy(rec.membership, string(addrecordDialog->MembershipCombo->GetValue().mb_str()).c_str());
+        strcpy(rec.booking, string(addrecordDialog->BookingCombo->GetValue().mb_str()).c_str());
+        
+        stringstream output_stream;
+        output_stream << left << setw(20) << rec.id 
+                << left << setw(15) << rec.firstname 
+                << left << setw(15) << rec.surname 
+                << left << setw(15) << rec.destination 
+                << left << setw(15) << rec.membership 
+                << left << setw(15) << rec.booking 
+                << endl; 
+                
+                string output = output_stream.str();
+                b_tree->insert(rec);
+                wxString formatted_string(output.c_str(), wxConvUTF8);
+                MainEditBox->SetValue(formatted_string);
+        
+        //b_tree->insert(rec);
+        addrecordDialog->Close();
+    }
+    addrecordDialog->Destroy(); 
+}
+void ProjectFrame::BTree_deleteRecord(wxCommandEvent& event) { 
+     DeleteDialog *deleteDialog = new DeleteDialog( wxT("Delete Record from Splay Tree"), wxPoint(200,300), wxSize(450,250) );
+    if (deleteDialog->ShowModal() == wxID_OK)
+    {
+        int ID = wxAtoi(deleteDialog->ClientIDBox->GetValue());
+        MainEditBox->SetValue("Didn't attemp based on my implementation of B-Tree :)");
+        deleteDialog->Close();
+    }
+    else if (deleteDialog->ShowModal() == wxID_CANCEL) 
+        deleteDialog->Close();
+    
+    deleteDialog->Destroy();
+    
+}
+void ProjectFrame::BTree_displayAll(wxCommandEvent& event) { 
+   wxString formatted_string(b_tree->displayBTree().c_str(), wxConvUTF8);
+    MainEditBox->SetValue(formatted_string);
+}
         
 //Functions for Set
 void ProjectFrame::createSets(wxCommandEvent& event) { 
